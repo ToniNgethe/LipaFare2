@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">LipaFare</string>
+    <string name="title_activity_add_sacco">AddSaccoActivity</string>
+    <string name="title_activity_add_sacco_location">AddSaccoLocationActivity</string>
+    <string name="field_message">Field(s) cannot be empty</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_operator">Map</string>
+    <string name="title_activity_operator_dash_board">OperatorDashBoard</string>
+    <string name="log_out">Log Out</string>
+    <string name="Funds">Funds</string>
+    <string name="myAcc">My Account</string>
+    <string name="otherUsers">Other Users</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string name="title_activity_add_matatu">AddMatatu</string>
+    <string name="title_activity_passanger_panel">PassangerPanel</string>
+    <string name="bookticket">Book Ticket</string>
+    <string name="cancel_tick">Cancel Ticket</string>
+    <string name="notification">Notifications</string>
+    <string name="about">About us</string>
+    <string name="title_activity_passanger_search_results">PassangerSearchResults</string>
+    <string name="title_activity_selected_sacco_mata">SelectedSaccoMata</string>
+    <string name="About_us">About us</string>
+    <string name="title_activity_payment_means">PaymentMeansActivity</string>
+    <string name="pay">Payment means</string>
+    <string name="title_activity_passanger_matatu_payment">PassangerMatatuPayment</string>
+
+    <string-array name="payment_means">
+        <item>M-pesa</item>
+        <item>Orange Money</item>
+        <item>Airtel Money</item>
+    </string-array>
+    <string name="title_activity_other_users">OtherUsersActivity</string>
+    <string name="title_activity_cancel_ticket">CancelTicketActivity</string>
+    <string name="title_activity_restore_ticket_acticity">RestoreTicketActicity</string>
+    <string name="title_activity_matatu_schedule">MatatuSchedule</string>
+
+</resources>

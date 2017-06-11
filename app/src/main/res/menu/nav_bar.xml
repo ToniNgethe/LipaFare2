@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_funds"
+            android:icon="@mipmap/ic_monetization_on_black_24dp"
+            android:title="@string/Funds" />
+        <item
+            android:id="@+id/nav_myacc"
+            android:icon="@mipmap/ic_account_box_black_24dp"
+            android:title="@string/myAcc" />
+        <item
+            android:id="@+id/nav_others"
+            android:icon="@mipmap/ic_people_outline_black_18dp"
+            android:title="@string/otherUsers" />
+
+
+    </group>
+
+    <item android:title="Other">
+        <menu>
+            <item
+                android:id="@+id/nav_logout"
+                android:title="@string/log_out" />
+        </menu>
+    </item>
+</menu>

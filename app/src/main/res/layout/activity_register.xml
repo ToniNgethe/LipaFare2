@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.toni.lipafare.Intro.RegisterActivity">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@mipmap/back"
+        android:isScrollContainer="true"
+        android:nestedScrollingEnabled="true"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/register_imageButton"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+
+            android:layout_gravity="center"
+            android:layout_marginBottom="40dp"
+            android:layout_marginTop="20dp"
+            android:adjustViewBounds="false"
+            android:padding="10dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/profile_pic"
+            app:civ_border_color="#FF000000"
+            app:civ_border_width="0.0dp" />
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:elevation="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/et_setup_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/cardView"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignRight="@+id/cardView"
+                    android:layout_below="@+id/cardView"
+
+                    android:elevation="5dp"
+                    android:hint="Username"
+                    app:met_floatingLabel="highlight"
+                    app:met_floatingLabelText="Username"
+                    app:met_iconLeft="@mipmap/ic_account_box_black_24dp"
+                    app:met_primaryColor="@color/colorAccent" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/et_register_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Email"
+                    app:met_floatingLabel="highlight"
+                    app:met_floatingLabelText="Email"
+                    app:met_iconLeft="@mipmap/ic_email_black_24dp"
+                    app:met_primaryColor="@color/colorAccent" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:id="@+id/et_register_pass"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    app:met_floatingLabel="highlight"
+
+                    app:met_iconLeft="@mipmap/ic_lock_black_24dp"
+                    app:met_primaryColor="@color/colorAccent" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingTop="20dp">
+
+                    <RadioGroup
+                        android:id="@+id/radioCategory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="5dp">
+
+                        <RadioButton
+                            android:id="@+id/radio_passenger"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:checked="true"
+                            android:text="Passenger"
+                            android:textSize="12sp" />
+
+                        <RadioButton
+                            android:id="@+id/radioOperator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Operator"
+                            android:textSize="12sp" />
+
+                    </RadioGroup>
+                    <Button
+                        android:id="@+id/btn_register_submit"
+                        style="@style/Widget.AppCompat.Button.Colored"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_margin="10dp"
+                        android:text="Submit"
+                        android:textAllCaps="false" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

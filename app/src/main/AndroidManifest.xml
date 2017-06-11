@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.toni.lipafare">
+
+    <uses-sdk tools:overrideLibrary="com.cs.googlemaproute" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <application
+        android:name=".Application.LipaFareApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon">
+        <activity android:name=".Intro.IntroActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
+        <activity android:name=".Intro.SignInActivity" />
+        <activity android:name=".Intro.SetUpActivity" />
+        <activity android:name=".Intro.RegisterActivity" />
+        <activity android:name=".Operator.OperatorIntroActivity" />
+        <activity
+            android:name=".Operator.AddSaccoActivity"
+            android:label="@string/title_activity_add_sacco"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Operator.AddSaccoLocationActivity"
+            android:label="@string/title_activity_add_sacco_location"
+            android:theme="@style/AppTheme" />
+
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".Operator.Operator"
+            android:label="@string/title_activity_operator" />
+        <activity android:name=".Operator.OperatorDashBoard" />
+        <activity
+            android:name=".Operator.AddMatatu"
+            android:label="@string/title_activity_add_matatu"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".Passanger.PassengerIntro" />
+        <activity
+            android:name=".Passanger.PassangerPanel"
+            android:label="@string/title_activity_passanger_panel"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".Intro.NoInternetActivity" />
+        <activity
+            android:name=".Passanger.PassangerSearchResults"
+            android:label="@string/title_activity_passanger_search_results"
+            android:parentActivityName=".Passanger.PassangerPanel"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Passanger.SelectedSaccoMata"
+            android:label="@string/title_activity_selected_sacco_mata"
+            android:parentActivityName=".Passanger.PassangerSearchResults"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Operator.PaymentMeansActivity"
+            android:label="@string/title_activity_payment_means"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Passanger.PassangerMatatuPayment"
+            android:label="@string/title_activity_passanger_matatu_payment"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".Passanger.Tickets" />
+        <activity android:name=".Operator.MatatuCredentials" />
+        <activity
+            android:name=".Operator.OtherUsersActivity"
+            android:label="@string/title_activity_other_users"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Passanger.CancelTicketActivity"
+            android:label="@string/title_activity_cancel_ticket"
+            android:parentActivityName=".Passanger.PassangerPanel"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Passanger.RestoreTicketActicity"
+            android:label="@string/title_activity_restore_ticket_acticity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Passanger.MatatuSchedule"
+            android:label="@string/title_activity_matatu_schedule"
+            android:theme="@style/AppTheme"></activity>
+    </application>
+
+</manifest>
