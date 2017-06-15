@@ -37,7 +37,8 @@
                 tools:layout_editor_absoluteX="0dp"
                 tools:layout_editor_absoluteY="0dp"
                 android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                tools:ignore="VectorDrawableCompat" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab_account_change_pic"
