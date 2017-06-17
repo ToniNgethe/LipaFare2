@@ -14,7 +14,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.example.toni.lipafare.Operator.Fragments.Adapter.OthersMatatu;
+import com.example.toni.lipafare.Operator.Adapter.OthersMatatu;
 import com.example.toni.lipafare.Operator.Model.Matatu;
 import com.example.toni.lipafare.R;
 import com.google.firebase.auth.FirebaseAuth;

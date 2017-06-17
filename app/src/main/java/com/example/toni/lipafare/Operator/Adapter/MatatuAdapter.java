@@ -1,4 +1,4 @@
-package com.example.toni.lipafare.Operator.Fragments.Adapter;
+package com.example.toni.lipafare.Operator.Adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -21,29 +21,30 @@ import com.example.toni.lipafare.R;
 import java.util.List;
 
 /**
- * Created by toni on 5/30/17.
+ * Created by toni on 4/19/17.
  */
 
-public class OthersMatatu extends RecyclerView.Adapter<OthersMatatu.OtherViewHolder>{
+public class MatatuAdapter extends RecyclerView.Adapter<MatatuAdapter.MatatuViewHolder> {
+
     private Context ctx;
     private List<Matatu> matList;
     private List<String> keyList;
 
-    public OthersMatatu(Context ctx, List<Matatu> matatuList, List<String> keys) {
+    public MatatuAdapter(Context ctx, List<Matatu> matatuList, List<String> keys) {
         this.ctx = ctx;
         this.matList = matatuList;
         this.keyList = keys;
     }
 
     @Override
-    public OthersMatatu.OtherViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MatatuViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View mView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_matatus,parent, false);
-        return new OtherViewHolder(ctx,mView);
+        return new MatatuViewHolder(ctx,mView);
     }
 
 
     @Override
-    public void onBindViewHolder(OtherViewHolder holder, int position) {
+    public void onBindViewHolder(MatatuViewHolder holder, int position) {
 
         if (holder !=null){
 
@@ -75,12 +76,12 @@ public class OthersMatatu extends RecyclerView.Adapter<OthersMatatu.OtherViewHol
         return matList.size();
     }
 
-    public static class OtherViewHolder extends RecyclerView.ViewHolder{
+    public static class MatatuViewHolder extends RecyclerView.ViewHolder{
 
         private View mView;
         private Context ctx;
 
-        public OtherViewHolder(Context ctx, View itemView) {
+        public MatatuViewHolder(Context ctx, View itemView) {
             super(itemView);
 
             this.ctx = ctx;

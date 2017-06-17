@@ -29,8 +29,12 @@
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
         <activity android:name=".Intro.SignInActivity" />
-        <activity android:name=".Intro.SetUpActivity" />
-        <activity android:name=".Intro.RegisterActivity" />
+        <activity
+            android:name=".Intro.SetUpActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Intro.RegisterActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".Operator.OperatorIntroActivity" />
         <activity
             android:name=".Operator.AddSaccoActivity"
@@ -85,7 +89,9 @@
             android:name=".Passanger.PassangerMatatuPayment"
             android:label="@string/title_activity_passanger_matatu_payment"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Passanger.Tickets" />
+        <activity
+            android:name=".Passanger.Tickets"
+            android:screenOrientation="portrait" />
         <activity android:name=".Operator.MatatuCredentials" />
         <activity
             android:name=".Operator.OtherUsersActivity"
@@ -103,6 +109,15 @@
         <activity
             android:name=".Passanger.MatatuSchedule"
             android:label="@string/title_activity_matatu_schedule"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Operator.FundsActivity"
+            android:label="@string/title_activity_funds"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Operator.AllFundsActivity"
+            android:label="@string/title_activity_all_funds"
             android:theme="@style/AppTheme"></activity>
     </application>
 

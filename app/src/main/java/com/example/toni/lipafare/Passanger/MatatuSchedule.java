@@ -76,90 +76,8 @@ public class MatatuSchedule extends AppCompatActivity {
 
         matKeys = new ArrayList<>();
         matList = new ArrayList<>();
-        Query q = mMatatu.orderByChild("sacco").equalTo(saccoKey);
 
-        q.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()) {
-                    rv.setVisibility(View.GONE);
-                    linearLayout.setVisibility(View.GONE);
-                    indicator.setVisibility(View.GONE);
-                    relativeLayout.setVisibility(View.VISIBLE);
-                } else {
-//
-//                    matKeys.clear();
-//                    matList.clear();
-//                    for (DataSnapshot ds: dataSnapshot.getChildren()){
-//
-//                        DatabaseReference cs = mMques.child(ds.getKey());
-//                        cs.addValueEventListener(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(final DataSnapshot dataSnapshot) {
-//
-//                                matKeys.clear();
-//                                matList.clear();
-//
-//                                if (dataSnapshot.exists()){
-//                                    indicator.setVisibility(View.VISIBLE);
-//                                    rv.setVisibility(View.VISIBLE);
-//                                    linearLayout.setVisibility(View.GONE);
-//                                    relativeLayout.setVisibility(View.GONE);
-//
-//
-//                                    Log.d(TAG,"sasdsad"+ dataSnapshot.getKey());
-//
-//
-//                                    DatabaseReference cm = mMatatu.child(dataSnapshot.getKey());
-//                                    cm.addValueEventListener(new ValueEventListener() {
-//                                        @Override
-//                                        public void onDataChange(DataSnapshot dt) {
-//
-//                                                Log.d(TAG,"sasdsad"+ dt.getValue().toString());
-//
-//                                                matList.add(dt.getValue(PassangerMatatuModel.class));
-//                                                matKeys.add(dataSnapshot.getKey());
-//                                                ScheduleAdapter scheduleAdapter = new ScheduleAdapter(MatatuSchedule.this, matList, matKeys, from, to);
-//                                                rv.setAdapter(scheduleAdapter);
-//
-//                                        }
-//
-//                                        @Override
-//                                        public void onCancelled(DatabaseError databaseError) {
-//
-//                                        }
-//                                    });
-//
-//                                }
-//                               // scheduleAdapter.notifyDataSetChanged();
-//                                //else {
-////                                    indicator.setVisibility(View.GONE);
-////                                    rv.setVisibility(View.GONE);
-////                                    linearLayout.setVisibility(View.VISIBLE);
-////                                    relativeLayout.setVisibility(View.GONE);
-//                              //  }
-//
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(DatabaseError databaseError) {
-//
-//                            }
-//                        });
-//
-//                    }
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        Query searc_Q = mMques.orderByChild("sacco").equalTo(saccoKey);
+        final Query searc_Q = mMques.orderByChild("sacco").equalTo(saccoKey);
         searc_Q.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -171,38 +89,40 @@ public class MatatuSchedule extends AppCompatActivity {
                     indicator.setVisibility(View.VISIBLE);
                     relativeLayout.setVisibility(View.GONE);
 
-
                     for (final DataSnapshot ds : dataSnapshot.getChildren()) {
                         Log.d(TAG, "Queried matatu key" + ds.getKey());
+                        Log.d(TAG, "FROM USER" + from);
+                        Log.d(TAG, "FROM LOCATION" + ds.child("stage").getValue().toString());
 
                         matList.clear();
                         matKeys.clear();
 
-                        DatabaseReference cm = mMatatu.child(ds.getKey());
-                        cm.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (ds.child("stage").getValue().toString().equals(from)) {
 
+                            DatabaseReference cm = mMatatu.child(ds.getKey());
+                            cm.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                Log.d(TAG, "Queried matatus" + dataSnapshot.getValue());
+                                    Log.d(TAG, "Queried matatus" + dataSnapshot.getValue());
 
-                                matList.add(dataSnapshot.getValue(PassangerMatatuModel.class));
-                                matKeys.add(ds.getKey());
+                                    matList.add(dataSnapshot.getValue(PassangerMatatuModel.class));
+                                    matKeys.add(ds.getKey());
 
-                                scheduleAdapter = new ScheduleAdapter(MatatuSchedule.this, matList, matKeys, from, to);
-                                rv.setAdapter(scheduleAdapter);
+                                    scheduleAdapter = new ScheduleAdapter(MatatuSchedule.this, matList, matKeys, from, to);
+                                    rv.setAdapter(scheduleAdapter);
 
-                            }
+                                }
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
 
-                            }
-                        });
-
-
+                                }
+                            });
+                        }
                     }
-                }else {
+
+                } else {
                     indicator.setVisibility(View.GONE);
                     rv.setVisibility(View.GONE);
                     linearLayout.setVisibility(View.VISIBLE);
@@ -218,10 +138,10 @@ public class MatatuSchedule extends AppCompatActivity {
 
 
 //        if (matList.isEmpty()) {
-//            indicator.setVisibility(View.GONE);
-//            rv.setVisibility(View.GONE);
-//            linearLayout.setVisibility(View.VISIBLE);
-//            relativeLayout.setVisibility(View.GONE);
+//            new SweetAlertDialog(MatatuSchedule.this, SweetAlertDialog.ERROR_TYPE)
+//                    .setTitleText("Oops...")
+//                    .setContentText("Sorry, no matatu at this stage")
+//                    .show();
 //        }
     }
 

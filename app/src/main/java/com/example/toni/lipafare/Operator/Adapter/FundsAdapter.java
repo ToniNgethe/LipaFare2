@@ -1,8 +1,6 @@
-package com.example.toni.lipafare.Operator.Fragments.Adapter;
+package com.example.toni.lipafare.Operator.Adapter;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,37 +12,36 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.toni.lipafare.Operator.Dialog_mat.MatatuDetails;
 import com.example.toni.lipafare.Operator.Model.Matatu;
 import com.example.toni.lipafare.R;
 
 import java.util.List;
 
 /**
- * Created by toni on 4/19/17.
+ * Created by toni on 6/17/17.
  */
 
-public class MatatuAdapter extends RecyclerView.Adapter<MatatuAdapter.MatatuViewHolder> {
-
+public class FundsAdapter extends RecyclerView.Adapter<FundsAdapter.FundsViewHolder> {
     private Context ctx;
     private List<Matatu> matList;
     private List<String> keyList;
 
-    public MatatuAdapter(Context ctx, List<Matatu> matatuList, List<String> keys) {
+    public FundsAdapter(Context ctx, List<Matatu> matatuList, List<String> keys) {
         this.ctx = ctx;
         this.matList = matatuList;
         this.keyList = keys;
     }
 
     @Override
-    public MatatuViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FundsAdapter.FundsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View mView = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_matatus,parent, false);
-        return new MatatuViewHolder(ctx,mView);
+        return new FundsAdapter.FundsViewHolder(ctx,mView);
     }
 
 
+
     @Override
-    public void onBindViewHolder(MatatuViewHolder holder, int position) {
+    public void onBindViewHolder(FundsViewHolder holder, int position) {
 
         if (holder !=null){
 
@@ -61,10 +58,8 @@ public class MatatuAdapter extends RecyclerView.Adapter<MatatuAdapter.MatatuView
                 @Override
                 public void onClick(View v) {
 
-                    MatatuDetails matatuDetails = new MatatuDetails(ctx, key);
-                    matatuDetails.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                    matatuDetails.setCanceledOnTouchOutside(false);
-                    matatuDetails.show();
+
+
                 }
             });
         }
@@ -76,12 +71,11 @@ public class MatatuAdapter extends RecyclerView.Adapter<MatatuAdapter.MatatuView
         return matList.size();
     }
 
-    public static class MatatuViewHolder extends RecyclerView.ViewHolder{
-
+    public static class FundsViewHolder extends RecyclerView.ViewHolder{
         private View mView;
         private Context ctx;
 
-        public MatatuViewHolder(Context ctx, View itemView) {
+        public FundsViewHolder(Context ctx, View itemView) {
             super(itemView);
 
             this.ctx = ctx;

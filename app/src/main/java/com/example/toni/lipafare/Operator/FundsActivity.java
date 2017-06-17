@@ -1,20 +1,22 @@
-package com.example.toni.lipafare.Operator.Fragments;
+package com.example.toni.lipafare.Operator;
 
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
+import com.example.toni.lipafare.Operator.Adapter.FundsAdapter;
 import com.example.toni.lipafare.Operator.Adapter.MatatuAdapter;
+import com.example.toni.lipafare.Operator.Fragments.Matatus;
 import com.example.toni.lipafare.Operator.Model.Matatu;
 import com.example.toni.lipafare.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,31 +30,28 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by toni on 3/25/17.
- */
+public class FundsActivity extends AppCompatActivity {
 
-public class Matatus extends Fragment {
-
-    private static final String TAG = Matatu.class.getSimpleName();
-    private View mView;
     private RecyclerView rv;
-
     private DatabaseReference mMats, mSacco;
     private FirebaseAuth mAuth;
     private List<Matatu> matatuList = new ArrayList<>();
     private List<String> matKey = new ArrayList<>();
-    private MatatuAdapter matatuAdapter;
+    private FundsAdapter fundsAdapter;
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_funds);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        mView = inflater.inflate(R.layout.fragment_matatus, container, false);
 
-        rv = (RecyclerView) mView.findViewById(R.id.rv_matatus);
+        rv = (RecyclerView)findViewById(R.id.funds_rv);
 
-        RecyclerView.LayoutManager lm = new GridLayoutManager(getActivity(), 3);
+        RecyclerView.LayoutManager lm = new GridLayoutManager(FundsActivity.this, 3);
 
         rv.setLayoutManager(lm);
         rv.addItemDecoration(new GridSpacingItemDecoration(3, dpToPx(6), true));
@@ -62,8 +61,6 @@ public class Matatus extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         mMats = FirebaseDatabase.getInstance().getReference().child("Matatu");
         mSacco = FirebaseDatabase.getInstance().getReference().child("Sacco");
-
-        return mView;
     }
 
     @Override
@@ -82,7 +79,7 @@ public class Matatus extends Fragment {
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
                         final String key = ds.getKey();
-                        Log.d(TAG, key);
+                    //    Log.d(TAG, key);
 
                         Query q = mMats.orderByChild("sacco").equalTo(key);
                         q.addValueEventListener(new ValueEventListener() {
@@ -90,22 +87,22 @@ public class Matatus extends Fragment {
                             public void onDataChange(DataSnapshot dataSnapshot1) {
 
                                 for (DataSnapshot single : dataSnapshot1.getChildren()){
-                                    Log.d(TAG,"Key:"+ single.getKey());
+                                    //Log.d(TAG,"Key:"+ single.getKey());
 
                                     Matatu mt = single.getValue(Matatu.class);
                                     matatuList.add(mt);
                                     matKey.add(single.getKey());
 
-                                    matatuAdapter = new MatatuAdapter(getActivity(), matatuList, matKey);
-                                    rv.setAdapter(matatuAdapter);
-                                    matatuAdapter.notifyDataSetChanged();
+                                    fundsAdapter = new FundsAdapter(FundsActivity.this, matatuList, matKey);
+                                    rv.setAdapter(fundsAdapter);
+                                    fundsAdapter.notifyDataSetChanged();
                                 }
 
                             }
 
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
-                            //    Toast.makeText(getActivity(),databaseError.getMessage(),Toast.LENGTH_SHORT).show();
+                                //    Toast.makeText(getActivity(),databaseError.getMessage(),Toast.LENGTH_SHORT).show();
                             }
                         });
                     }

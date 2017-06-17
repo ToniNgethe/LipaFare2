@@ -120,7 +120,7 @@ public class PassangerAccountFragment extends Fragment implements View.OnClickLi
                     try {
                         //check for existance to avoid null pointers
                         if (dataSnapshot.exists()) {
-                            try {
+
                                 name.setText(dataSnapshot.child("user").getValue().toString());
                                 email.setText(mAuth.getCurrentUser().getEmail());
                                 new Handler().post(new Runnable() {
@@ -140,14 +140,10 @@ public class PassangerAccountFragment extends Fragment implements View.OnClickLi
                                 }else{
                                     number.setText("Number not set");
                                 }
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
                         } else {
                             //Toast.makeText(PassangerPanel.this, "No user found", Toast.LENGTH_SHORT).show();
                         }
-                    } catch (NullPointerException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -289,10 +285,9 @@ public class PassangerAccountFragment extends Fragment implements View.OnClickLi
             pDialog.show();
 
             // Create a storage reference from our app
-            final StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-
+            final StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("Profile");
             // Create a reference to the file to delete
-            StorageReference desertRef = storageRef.child("Profile/" + mAuth.getCurrentUser().getUid());
+            StorageReference desertRef = storageRef.child(mAuth.getCurrentUser().getUid());
 
             // Delete the file
             desertRef.delete().addOnSuccessListener(new OnSuccessListener() {
@@ -301,7 +296,7 @@ public class PassangerAccountFragment extends Fragment implements View.OnClickLi
 
                     pDialog.setTitleText("Deleting old image...");
 
-                    StorageReference newImage = storageRef.child("Profile_images");
+                    StorageReference newImage = storageRef.child(mAuth.getCurrentUser().getUid());
                     newImage.child(mAuth.getCurrentUser().getUid()).putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

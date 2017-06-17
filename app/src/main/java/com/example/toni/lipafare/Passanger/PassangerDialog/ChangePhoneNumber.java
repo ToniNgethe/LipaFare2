@@ -68,7 +68,7 @@ public class ChangePhoneNumber extends Dialog{
             @Override
             public void onClick(View view) {
 
-                dismiss();
+                hide();
 
             }
         });
@@ -85,7 +85,7 @@ public class ChangePhoneNumber extends Dialog{
                     if (checkNumber(editText.getText().toString())) {
 
 
-                        mUsers.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                        mUsers.child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
 

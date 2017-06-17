@@ -312,10 +312,16 @@ public class OperatorDashBoard extends AppCompatActivity {
 
     private void setupVp() {
 
-        OperatorViewPagerAdapeter operatorViewPagerAdapeter = new OperatorViewPagerAdapeter(getSupportFragmentManager());
-        operatorViewPagerAdapeter.addFragment(new Saccos(), "Sacco");
-        operatorViewPagerAdapeter.addFragment(new Matatus(), "Matatus");
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                OperatorViewPagerAdapeter operatorViewPagerAdapeter = new OperatorViewPagerAdapeter(getSupportFragmentManager());
+                operatorViewPagerAdapeter.addFragment(new Saccos(), "Sacco");
+                operatorViewPagerAdapeter.addFragment(new Matatus(), "Matatus");
 
-        mViewPager.setAdapter(operatorViewPagerAdapeter);
+                mViewPager.setAdapter(operatorViewPagerAdapeter);
+            }
+        });
+
     }
 }

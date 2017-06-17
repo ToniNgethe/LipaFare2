@@ -1,5 +1,6 @@
 package com.example.toni.lipafare.Operator.Fragments;
 
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -47,7 +48,7 @@ public class Saccos extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         mView = inflater.inflate(R.layout.fragment_saccos, container, false);
-
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         //views
         logo = (ImageView) mView.findViewById(R.id.iv_sacco_logo);
         details = (CardView)mView.findViewById(R.id.cardView_sacco_details);

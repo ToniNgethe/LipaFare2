@@ -81,24 +81,27 @@ public class PassangerHomeFragment extends Fragment implements View.OnClickListe
 
         //
         //google api client
-        googleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addApi(LocationServices.API)
-                .addApi(Places.GEO_DATA_API)
-                .enableAutoManage(getActivity(), GOOGLE_API_CLIENT_ID, this)
-                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                    @Override
-                    public void onConnected(@Nullable Bundle bundle) {
+        try {
+            googleApiClient = new GoogleApiClient.Builder(getActivity())
+                    .addApi(LocationServices.API)
+                    .addApi(Places.GEO_DATA_API)
+                    .enableAutoManage(getActivity(), GOOGLE_API_CLIENT_ID, this)
+                    .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                        @Override
+                        public void onConnected(@Nullable Bundle bundle) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onConnectionSuspended(int i) {
+                        @Override
+                        public void onConnectionSuspended(int i) {
 
-                    }
-                })
-                .addOnConnectionFailedListener(this)
-                .build();
-
+                        }
+                    })
+                    .addOnConnectionFailedListener(this)
+                    .build();
+        }catch (Exception e){
+            //Toast.makeText(getActivity(),"Something went wrong. Restart up",Toast.LENGTH_SHORT).show();
+        }
 
         return mView;
     }
@@ -106,8 +109,12 @@ public class PassangerHomeFragment extends Fragment implements View.OnClickListe
     @Override
     public void onDestroy() {
         super.onDestroy();
-        googleApiClient.stopAutoManage(getActivity());
-        googleApiClient.disconnect();
+        try {
+            googleApiClient.stopAutoManage(getActivity());
+            googleApiClient.disconnect();
+        }catch (Exception e){
+            
+        }
     }
 
     @Override

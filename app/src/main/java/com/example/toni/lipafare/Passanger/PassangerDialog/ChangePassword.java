@@ -63,7 +63,7 @@ public class ChangePassword extends Dialog {
             @Override
             public void onClick(View view) {
 
-                dismiss();
+                hide();
 
             }
         });

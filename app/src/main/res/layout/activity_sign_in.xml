@@ -37,102 +37,107 @@
             android:layout_marginRight="10dp"
             app:cardCornerRadius="5dp">
 
-            <LinearLayout
-                android:id="@+id/loginBox"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/imageView"
-                android:layout_margin="10dp"
-                android:orientation="vertical">
-
-
-                <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/et_signin_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:hint="Email"
-                    app:met_floatingLabel="highlight"
-                    app:met_floatingLabelText="Email"
-                    app:met_iconLeft="@mipmap/ic_email_black_24dp"
-                    app:met_primaryColor="@color/colorAccent" />
-
-                <com.rengwuxian.materialedittext.MaterialEditText
-                    android:id="@+id/et_signin_pass"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:hint="Password"
-                    android:inputType="textPassword"
-                    app:met_floatingLabel="highlight"
-                    app:met_iconLeft="@mipmap/ic_lock_black_24dp"
-                    app:met_primaryColor="@color/colorAccent"
-
-                    />
-
-                <Button
-                    android:id="@+id/btn_sigin_login"
-                    style="@style/Widget.AppCompat.Button.Colored"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginRight="19dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Login"
-                    android:textAllCaps="false" />
+                android:layout_height="wrap_content">
 
                 <LinearLayout
+                    android:id="@+id/loginBox"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginRight="19dp"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imageView"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
 
-                    <View
-                        android:id="@+id/view"
-                        android:layout_width="5dp"
-                        android:layout_height="1dp"
-                        android:layout_below="@id/cardd"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="40.21"
-                        android:background="@android:color/darker_gray" />
 
-                    <TextView
-                        android:id="@+id/textView8"
-                        android:layout_width="wrap_content"
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/et_signin_email"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:padding="2dp"
-                        android:text="OR" />
+                        android:hint="Email"
+                        app:met_floatingLabel="highlight"
+                        app:met_floatingLabelText="Email"
+                        app:met_iconLeft="@mipmap/ic_email_black_24dp"
+                        app:met_primaryColor="@color/colorAccent" />
 
-                    <View
-                        android:id="@+id/vie"
-                        android:layout_width="30dp"
-                        android:layout_height="1dp"
-                        android:layout_below="@id/cardd"
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:id="@+id/et_signin_pass"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:hint="Password"
+                        android:inputType="textPassword"
+                        app:met_floatingLabel="highlight"
+                        app:met_iconLeft="@mipmap/ic_lock_black_24dp"
+                        app:met_primaryColor="@color/colorAccent"
+
+                        />
+
+                    <Button
+                        android:id="@+id/btn_sigin_login"
+                        style="@style/Widget.AppCompat.Button.Colored"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="19dp"
                         android:layout_marginTop="10dp"
-                        android:layout_weight="32.91"
-                        android:background="@android:color/darker_gray" />
+                        android:text="Login"
+                        android:textAllCaps="false" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="19dp"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:id="@+id/view"
+                            android:layout_width="5dp"
+                            android:layout_height="1dp"
+                            android:layout_below="@id/cardd"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="40.21"
+                            android:background="@android:color/darker_gray" />
+
+                        <TextView
+                            android:id="@+id/textView8"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1"
+                            android:padding="2dp"
+                            android:text="OR" />
+
+                        <View
+                            android:id="@+id/vie"
+                            android:layout_width="30dp"
+                            android:layout_height="1dp"
+                            android:layout_below="@id/cardd"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="32.91"
+                            android:background="@android:color/darker_gray" />
+                    </LinearLayout>
+
+                    <com.google.android.gms.common.SignInButton
+                        android:id="@+id/googlesignin"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/vie"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="19dp"
+                        android:scrollbarAlwaysDrawVerticalTrack="true" />
+
                 </LinearLayout>
-
-                <com.google.android.gms.common.SignInButton
-                    android:id="@+id/googlesignin"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/vie"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginRight="19dp"
-                    android:scrollbarAlwaysDrawVerticalTrack="true" />
-
-            </LinearLayout>
+            </ScrollView>
         </android.support.v7.widget.CardView>
 
         <LinearLayout

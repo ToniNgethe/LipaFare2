@@ -68,7 +68,7 @@ public class ChangeUserNameDialog extends Dialog {
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dismiss();
+                hide();
             }
         });
 
@@ -82,7 +82,7 @@ public class ChangeUserNameDialog extends Dialog {
 
                     if(mAuth.getCurrentUser() != null){
 
-                        mUsers.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                        mUsers.child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
 

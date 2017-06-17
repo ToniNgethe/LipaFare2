@@ -11,7 +11,7 @@
     <LinearLayout
         android:id="@+id/linear_cancel_side"
         android:layout_width="0dp"
-        android:layout_height="170dp"
+        android:layout_height="0dp"
         android:orientation="vertical"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -39,17 +39,17 @@
 
     <LinearLayout
         android:id="@+id/linearLayout_cancel_info"
-        android:layout_width="313dp"
-        android:layout_height="35dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/cust_button"
         android:orientation="horizontal"
         android:visibility="visible"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -60,6 +60,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
+            android:padding="10dp"
             android:text="Tap on ticket to  cancel it"
             android:textColor="@color/colorPrimary"
             android:textStyle="bold"
@@ -71,7 +72,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_cancel_side"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
