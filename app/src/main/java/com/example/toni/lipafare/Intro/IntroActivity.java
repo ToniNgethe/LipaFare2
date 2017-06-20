@@ -74,7 +74,7 @@ public class IntroActivity extends AppCompatActivity {
 
                 //user is logged in,,, so get category
                 DatabaseReference cu = mUsers.child(mAuth.getCurrentUser().getUid());
-                cu.addValueEventListener(new ValueEventListener() {
+                cu.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 

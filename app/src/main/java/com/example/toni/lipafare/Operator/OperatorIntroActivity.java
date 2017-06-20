@@ -81,7 +81,7 @@ public class OperatorIntroActivity extends AppCompatActivity {
 
 
         Query q = mOperators.orderByChild("admin").equalTo(mAuth.getCurrentUser().getUid());
-        q.addValueEventListener(new ValueEventListener() {
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -94,7 +94,7 @@ public class OperatorIntroActivity extends AppCompatActivity {
                         Log.d(TAG, key);
 
                         DatabaseReference m = mOperators.child(key);
-                        m.child("name").addValueEventListener(new ValueEventListener() {
+                        m.child("name").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -103,7 +103,7 @@ public class OperatorIntroActivity extends AppCompatActivity {
                                     DatabaseReference mRoutes = FirebaseDatabase.getInstance().getReference().child("Route");
                                     Query q = mRoutes.orderByChild("sacco").equalTo(key);
 
-                                    q.addValueEventListener(new ValueEventListener() {
+                                    q.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -111,7 +111,7 @@ public class OperatorIntroActivity extends AppCompatActivity {
 
                                                 //check payments
                                                 DatabaseReference mPays = FirebaseDatabase.getInstance().getReference().child("Paymeans");
-                                                mPays.child(key).addValueEventListener(new ValueEventListener() {
+                                                mPays.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
                                                     @Override
                                                     public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -134,31 +134,23 @@ public class OperatorIntroActivity extends AppCompatActivity {
 
                                                     }
                                                 });
-
                                             }else {
                                                 //redirect to map
                                                 startActivity(new Intent(OperatorIntroActivity.this, Operator.class));
                                                 finish();
                                             }
-
                                         }
-
                                         @Override
                                         public void onCancelled(DatabaseError databaseError) {
                                             Toast.makeText(OperatorIntroActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                                         }
                                     });
 
-
-
                                 } else {
-
                                     //redirect to add
                                     startActivity(new Intent(OperatorIntroActivity.this, AddSaccoActivity.class));
                                     finish();
-
                                 }
-
                             }
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
@@ -181,28 +173,36 @@ public class OperatorIntroActivity extends AppCompatActivity {
         if (mAuth.getCurrentUser() != null) {
 
             DatabaseReference cu = mUsers.child(mAuth.getCurrentUser().getUid());
-            cu.addValueEventListener(new ValueEventListener() {
+            cu.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(final DataSnapshot dataSnapshot) {
 
                     if (dataSnapshot.exists()) {
 
-                        name.setText(dataSnapshot.child("user").getValue().toString());
-                        email.setText(mAuth.getCurrentUser().getEmail());
-
-                        new Handler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Glide.with(OperatorIntroActivity.this).load(dataSnapshot.child("image").getValue().toString())
-                                        .crossFade()
-                                        .thumbnail(0.5f)
-                                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                        .error(R.mipmap.profile2)
-                                        .into(profile);
-                            }
-                        });
+                        try {
+                            name.setText(dataSnapshot.child("user").getValue().toString());
+                            email.setText(mAuth.getCurrentUser().getEmail());
 
 
+                            new Handler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Glide.with(OperatorIntroActivity.this).load(dataSnapshot.child("image").getValue().toString())
+                                                .crossFade()
+                                                .thumbnail(0.5f)
+                                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                                .error(R.mipmap.profile2)
+                                                .into(profile);
+                                    }catch (Exception e){
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                     } else {
                         Toast.makeText(OperatorIntroActivity.this, "Error: User not found", Toast.LENGTH_SHORT).show();
                     }

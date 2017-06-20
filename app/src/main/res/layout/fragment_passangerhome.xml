@@ -6,136 +6,95 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:weightSum="1">
 
-    <android.support.v7.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/iv_fragmenthome_from"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0.15"
-                android:padding="15dp"
-                app:srcCompat="@mipmap/ic_track" />
-
-            <TextView
-                android:id="@+id/tv_passangerhome_from"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="20dp"
-                android:text="FROM"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <ImageView
-        android:padding="10dp"
-        android:id="@+id/imageView3"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        app:srcCompat="@drawable/ic_swap_vertical_circle_black_24dp"
-        android:layout_weight="0.83" />
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/iv_fragmenthome_to"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0.17"
-                android:padding="15dp"
-                app:srcCompat="@mipmap/ic_track" />
-
-            <TextView
-                android:id="@+id/tv_passangerhome_to"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="20dp"
-                android:text="TO"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-    </android.support.v7.widget.CardView>
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:weightSum="1">
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="30dp">
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="91dp"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_fragmenthome_from"
+                    android:layout_width="96dp"
+                    android:layout_height="76dp"
+                    android:padding="15dp"
+                    app:srcCompat="@mipmap/ic_track" />
 
                 <TextView
-                    android:id="@+id/textView15"
-                    android:layout_width="match_parent"
+                    android:id="@+id/tv_passangerhome_from"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="Date of travel"
+                    android:layout_weight="1"
+                    android:padding="20dp"
+                    android:text="FROM"
                     android:textSize="20sp"
                     android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/iv_passangerhome_calenda"
-                        android:layout_width="75dp"
-                        android:layout_height="match_parent"
-                        app:srcCompat="@drawable/ic_today_black_24dp" />
-
-                    <TextView
-                        android:id="@+id/tv_passangerhome_date"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.01"
-                        android:gravity="center"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
             </LinearLayout>
+
         </android.support.v7.widget.CardView>
 
-    <Button
-        android:id="@+id/btn_passangerhome_search"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="232dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:drawableLeft="@drawable/ic_directions_bus_black_24dp"
-        android:gravity="center"
-        android:text="Search Bus /Matatu"
-        android:layout_weight="0.05" />
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_weight="0.60"
+            android:padding="10dp"
+            app:srcCompat="@drawable/ic_swap_vertical_circle_black_24dp" />
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_fragmenthome_to"
+                    android:layout_width="96dp"
+                    android:layout_height="76dp"
+                    android:padding="15dp"
+                    app:srcCompat="@mipmap/ic_track" />
+
+                <TextView
+                    android:id="@+id/tv_passangerhome_to"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="20dp"
+                    android:text="TO"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <Button
+            android:id="@+id/btn_passangerhome_search"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="70dp"
+            android:layout_weight="0.43"
+            android:drawableLeft="@drawable/ic_directions_bus_black_24dp"
+            android:gravity="center"
+            android:text="Search Bus /Matatu" />
     </LinearLayout>
 </ScrollView>

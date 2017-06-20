@@ -71,9 +71,12 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         mQueu.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                if (dataSnapshot.exists()){
-                    viewHolder.setMatStatus(dataSnapshot.child("sits").getValue().toString());
+                try {
+                    if (dataSnapshot.exists()) {
+                        viewHolder.setMatStatus(dataSnapshot.child("sits").getValue().toString());
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
 
             }

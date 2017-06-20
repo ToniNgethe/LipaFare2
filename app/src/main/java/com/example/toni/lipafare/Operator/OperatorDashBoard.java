@@ -118,7 +118,7 @@ public class OperatorDashBoard extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
-                Toast.makeText(OperatorDashBoard.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            //    Toast.makeText(OperatorDashBoard.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -157,7 +157,7 @@ public class OperatorDashBoard extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        Toast.makeText(OperatorDashBoard.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(OperatorDashBoard.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -177,13 +177,19 @@ public class OperatorDashBoard extends AppCompatActivity {
 
                     case R.id.nav_funds:
 
-                        Toast.makeText(OperatorDashBoard.this, "Funds Clicked", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(OperatorDashBoard.this, "Funds Clicked", Toast.LENGTH_SHORT).show();
+
+                        Intent i = new Intent(OperatorDashBoard.this, FundsActivity.class);
+                        startActivity(i);
+
                         drawerLayout.closeDrawers();
 
                         break;
                     case R.id.nav_myacc:
 
-                        Toast.makeText(OperatorDashBoard.this, "My Acc Clicked", Toast.LENGTH_SHORT).show();
+                        Intent a = new Intent(OperatorDashBoard.this, OperatorProfile.class);
+                        startActivity(a);
+
                         drawerLayout.closeDrawers();
 
                         break;

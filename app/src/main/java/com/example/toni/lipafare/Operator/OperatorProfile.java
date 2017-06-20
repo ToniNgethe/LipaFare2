@@ -1,4 +1,4 @@
-package com.example.toni.lipafare.Passanger.Fragments;
+package com.example.toni.lipafare.Operator;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,15 +12,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -29,6 +28,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.toni.lipafare.Passanger.Fragments.PassangerAccountFragment;
 import com.example.toni.lipafare.Passanger.PassangerDialog.ChangeEmailAddress;
 import com.example.toni.lipafare.Passanger.PassangerDialog.ChangePassword;
 import com.example.toni.lipafare.Passanger.PassangerDialog.ChangePhoneNumber;
@@ -52,16 +52,12 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-/**
- * Created by toni on 4/28/17.
- */
+import static java.security.AccessController.getContext;
 
-public class PassangerAccountFragment extends Fragment implements View.OnClickListener{
-
+public class OperatorProfile extends AppCompatActivity implements View.OnClickListener{
     private static final int PROFILE_IMAGE_PERMISSION = 1000;
     private static final String TAG = PassangerAccountFragment.class.getSimpleName();
     private static final int GALLARY_INTENT =1 ;
-    private View mView;
     private Button change_pass;
     private ImageButton edit_email;
     private ImageButton edit_username;
@@ -73,23 +69,23 @@ public class PassangerAccountFragment extends Fragment implements View.OnClickLi
 
     private FirebaseAuth mAuth;
     private DatabaseReference mUsers;
-
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        mView = inflater.inflate(R.layout.fragment_passanger_acc, container,false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_operator_profile);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         //views
-        change_pass = (Button) mView.findViewById(R.id.btn_account_pass);
-        edit_email = (ImageButton) mView.findViewById(R.id.imgbtn_edit_email);
-        edit_username = (ImageButton) mView.findViewById(R.id.imgbtn_edit_name);
-        edit_phone = (ImageButton) mView.findViewById(R.id.imgbtn_edit_number);
-        change_image = (FloatingActionButton) mView.findViewById(R.id.fab_operatorProfile_pic);
-        name = (TextView) mView.findViewById(R.id.tv_account_username);
-        email = (TextView) mView.findViewById(R.id.tv_account_email);
-        number = (TextView) mView.findViewById(R.id.tv_account_number);
-        profile = (ImageView) mView.findViewById(R.id.iv_operatorProfile_profile);
+        change_pass = (Button) findViewById(R.id.btn_operator_pass);
+        edit_email = (ImageButton) findViewById(R.id.imgbtn_operator_email);
+        edit_username = (ImageButton)findViewById(R.id.imgbtn_operator_name);
+        edit_phone = (ImageButton) findViewById(R.id.imgbtn_operator_number);
+        change_image = (FloatingActionButton) findViewById(R.id.fab_operatorProfile_pic);
+        name = (TextView) findViewById(R.id.tv_operatorProfile_username);
+        email = (TextView) findViewById(R.id.tv_operatorProfile_email);
+        number = (TextView) findViewById(R.id.tv_operatorProfile_number);
+        profile = (ImageView) findViewById(R.id.iv_operatorProfile_profile);
 
         //firebase
         mAuth = FirebaseAuth.getInstance();
@@ -104,9 +100,6 @@ public class PassangerAccountFragment extends Fragment implements View.OnClickLi
 
         //load details first....
         load();
-
-
-        return mView;
     }
 
     private void load() {
@@ -121,29 +114,29 @@ public class PassangerAccountFragment extends Fragment implements View.OnClickLi
                         //check for existance to avoid null pointers
                         if (dataSnapshot.exists()) {
 
-                                name.setText(dataSnapshot.child("user").getValue().toString());
-                                email.setText(mAuth.getCurrentUser().getEmail());
-                                new Handler().post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            Glide.with(getActivity()).load(dataSnapshot.child("image").getValue().toString())
-                                                    .crossFade()
-                                                    .thumbnail(0.5f)
-                                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                                    .error(R.mipmap.profile2)
-                                                    .into(profile);
-                                        }catch (Exception e){
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
+                            name.setText(dataSnapshot.child("user").getValue().toString());
+                            email.setText(mAuth.getCurrentUser().getEmail());
+                            new Handler().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Glide.with(OperatorProfile.this).load(dataSnapshot.child("image").getValue().toString())
+                                                .crossFade()
+                                                .thumbnail(0.5f)
+                                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                                .error(R.mipmap.profile2)
+                                                .into(profile);
+                                    }catch (Exception e){
 
-                                if (!dataSnapshot.child("number").getValue().toString().isEmpty()){
-                                    number.setText(dataSnapshot.child("number").getValue().toString());
-                                }else{
-                                    number.setText("Number not set");
+                                    }
                                 }
+                            });
+
+                            if (!dataSnapshot.child("number").getValue().toString().isEmpty()){
+                                number.setText(dataSnapshot.child("number").getValue().toString());
+                            }else{
+                                number.setText("Number not set");
+                            }
                         } else {
                             //Toast.makeText(PassangerPanel.this, "No user found", Toast.LENGTH_SHORT).show();
                         }
@@ -162,98 +155,19 @@ public class PassangerAccountFragment extends Fragment implements View.OnClickLi
     }
 
     @Override
-    public void onClick(View v) {
-
-        if (v == change_image){
-            //change image..
-            if (Build.VERSION.SDK_INT >= 23) {
-                Log.d(TAG, "ENETERED CHECKING VERSION");
-                // Here, thisActivity is the current activity
-                if (ContextCompat.checkSelfPermission(getActivity(),
-                        android.Manifest.permission.READ_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-
-                    Log.d(TAG, "PERMISSION NOT GRANTED");
-                    // Should we show an explanation?
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                            android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                        Log.d(TAG, "qqqqqqqqqqqqqqqqqqqqqqqqqqq");
-                        // Show an expanation to the user *asynchronously* -- don't block
-                        // this thread waiting for the user's response! After the user
-                        // sees the explanation, try again to request the permission.
-
-                    } else {
-
-                        // No explanation needed, we can request the permission.
-                        Log.d(TAG, "REQUEDSFDFSDSF");
-                        ActivityCompat.requestPermissions(getActivity(),
-                                new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
-                                PROFILE_IMAGE_PERMISSION);
-
-                        // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
-                        // app-defined int constant. The callback method gets the
-                        // result of the request.
-                    }
-                } else {
-                    Log.d(TAG, "REQUEST IMAGE PICKING");
-                    ActivityCompat.requestPermissions(getActivity(),
-                            new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
-                            PROFILE_IMAGE_PERMISSION);
-                }
-            } else {
-                Log.d(TAG, "DRIVER IMAGE PERMISSION GRANTED");
-                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-           //     photoPickerIntent.setType("image/*");
-                startActivityForResult(photoPickerIntent, GALLARY_INTENT);
-            }
-
-        } else if (v == edit_email){
-
-            //change email
-            ChangeEmailAddress changeEmailAddress = new ChangeEmailAddress(getActivity());
-            changeEmailAddress.getWindow().getAttributes().windowAnimations = R.style.MyAnimation_Window;
-            changeEmailAddress.setCanceledOnTouchOutside(false);
-            changeEmailAddress.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            changeEmailAddress.show();
-
-        } else if(v == edit_username){
-            //change username
-            ChangeUserNameDialog changeUsername = new ChangeUserNameDialog(getActivity());
-            changeUsername.getWindow().getAttributes().windowAnimations = R.style.MyAnimation_Window;
-            changeUsername.setCanceledOnTouchOutside(false);
-            changeUsername.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            changeUsername.show();
-        }else if (v == edit_phone){
-            //change phone
-            ChangePhoneNumber changeUsername = new ChangePhoneNumber(getActivity());
-            changeUsername.getWindow().getAttributes().windowAnimations = R.style.MyAnimation_Window;
-            changeUsername.setCanceledOnTouchOutside(false);
-            changeUsername.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            changeUsername.show();
-        }else if(v == change_pass){
-            //change pass
-            ChangePassword changeUsername = new ChangePassword(getActivity());
-            changeUsername.getWindow().getAttributes().windowAnimations = R.style.MyAnimation_Window;
-            changeUsername.setCanceledOnTouchOutside(false);
-            changeUsername.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            changeUsername.show();
-        }
-
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         try {
             // When an Image is picked
-            if (requestCode == GALLARY_INTENT && resultCode == Activity.RESULT_OK) {
+            if (requestCode == GALLARY_INTENT && resultCode == Activity.RESULT_OK
+                    && null != data) {
                 Uri selectedImage = data.getData();
 
                 CropImage.activity(selectedImage)
                         .setGuidelines(CropImageView.Guidelines.ON)
                         .setAspectRatio(1, 1)
-                        .start(getContext(), this);
+                        .start(this);
             }
             // when image is cropped
             else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
@@ -263,7 +177,7 @@ public class PassangerAccountFragment extends Fragment implements View.OnClickLi
 
                     imageUri = result.getUri();
 
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
                     profile.setImageBitmap(bitmap);
 
                     uploadImage();
@@ -272,19 +186,97 @@ public class PassangerAccountFragment extends Fragment implements View.OnClickLi
                     Exception error = result.getError();
                 }
             } else {
-                Toast.makeText(getActivity(), "You haven't picked Image",
+                Toast.makeText(this, "You haven't picked Image",
                         Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
-            Toast.makeText(getActivity(), "Something went wrong" + e.getMessage(), Toast.LENGTH_LONG)
+            Toast.makeText(this, "Something went wrong" + e.getMessage(), Toast.LENGTH_LONG)
                     .show();
         }
     }
 
+    @Override
+    public void onClick(View v) {
+
+        if (v == change_image){
+            //change image..
+            if (Build.VERSION.SDK_INT >= 23) {
+                // Here, thisActivity is the current activity
+                if (ContextCompat.checkSelfPermission(OperatorProfile.this,
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+
+                    // Should we show an explanation?
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(OperatorProfile.this,
+                            android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                        // Show an expanation to the user *asynchronously* -- don't block
+                        // this thread waiting for the user's response! After the user
+                        // sees the explanation, try again to request the permission.
+
+                    } else {
+
+                        // No explanation needed, we can request the permission.
+
+                        ActivityCompat.requestPermissions(OperatorProfile.this,
+                                new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
+                                PROFILE_IMAGE_PERMISSION);
+
+                        // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
+                        // app-defined int constant. The callback method gets the
+                        // result of the request.
+                    }
+                } else {
+                    ActivityCompat.requestPermissions(OperatorProfile.this,
+                            new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
+                            PROFILE_IMAGE_PERMISSION);
+                }
+            } else {
+                Log.d(TAG, "DRIVER IMAGE PERMISSION GRANTED");
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, GALLARY_INTENT);
+            }
+
+        } else if (v == edit_email){
+
+            //change email
+            ChangeEmailAddress changeEmailAddress = new ChangeEmailAddress(OperatorProfile.this);
+            changeEmailAddress.getWindow().getAttributes().windowAnimations = R.style.MyAnimation_Window;
+            changeEmailAddress.setCanceledOnTouchOutside(false);
+            changeEmailAddress.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            changeEmailAddress.show();
+
+        } else if(v == edit_username){
+            //change username
+            ChangeUserNameDialog changeUsername = new ChangeUserNameDialog(OperatorProfile.this);
+            changeUsername.getWindow().getAttributes().windowAnimations = R.style.MyAnimation_Window;
+            changeUsername.setCanceledOnTouchOutside(false);
+            changeUsername.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            changeUsername.show();
+        }else if (v == edit_phone){
+            //change phone
+            ChangePhoneNumber changeUsername = new ChangePhoneNumber(OperatorProfile.this);
+            changeUsername.getWindow().getAttributes().windowAnimations = R.style.MyAnimation_Window;
+            changeUsername.setCanceledOnTouchOutside(false);
+            changeUsername.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            changeUsername.show();
+        }else if(v == change_pass){
+            //change pass
+            ChangePassword changeUsername = new ChangePassword(OperatorProfile.this);
+            changeUsername.getWindow().getAttributes().windowAnimations = R.style.MyAnimation_Window;
+            changeUsername.setCanceledOnTouchOutside(false);
+            changeUsername.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            changeUsername.show();
+        }
+
+    }
+
+
     private void uploadImage() {
 
         if (imageUri != null) {
-            final SweetAlertDialog pDialog = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE);
+            final SweetAlertDialog pDialog = new SweetAlertDialog(OperatorProfile.this, SweetAlertDialog.PROGRESS_TYPE);
             pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
             pDialog.setTitleText("Uploading image....");
             pDialog.setCancelable(false);
@@ -325,7 +317,7 @@ public class PassangerAccountFragment extends Fragment implements View.OnClickLi
                                     } else {
 
                                         pDialog.dismiss();
-                                        new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                                        new SweetAlertDialog(OperatorProfile.this, SweetAlertDialog.ERROR_TYPE)
                                                 .setTitleText("Oops...")
                                                 .setContentText(task.getException().getMessage())
                                                 .show();
@@ -340,7 +332,7 @@ public class PassangerAccountFragment extends Fragment implements View.OnClickLi
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             pDialog.dismiss();
-                            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                            new SweetAlertDialog(OperatorProfile.this, SweetAlertDialog.ERROR_TYPE)
                                     .setTitleText("Oops...")
                                     .setContentText(e.getMessage())
                                     .show();
@@ -353,7 +345,7 @@ public class PassangerAccountFragment extends Fragment implements View.OnClickLi
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     pDialog.dismiss();
-                    new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                    new SweetAlertDialog(OperatorProfile.this, SweetAlertDialog.ERROR_TYPE)
                             .setTitleText("Oops...")
                             .setContentText(exception.getMessage())
                             .show();
@@ -375,15 +367,15 @@ public class PassangerAccountFragment extends Fragment implements View.OnClickLi
 
                 // permission was granted, yay! Do the
                 // contacts-related task you need to do.
-                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-              //  photoPickerIntent.setType("image/*");
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
                 startActivityForResult(photoPickerIntent, GALLARY_INTENT);
 
             } else {
 
                 // permission denied, boo! Disable the
                 // functionality that depends on this permission.
-                Toast.makeText(getActivity(), "Permission needed to chose image", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Permission needed to chose image", Toast.LENGTH_SHORT).show();
             }
             return;
         }

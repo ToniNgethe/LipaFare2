@@ -1,21 +1,16 @@
 package com.example.toni.lipafare.Passanger.Fragments;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.icu.util.Calendar;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,9 +43,10 @@ public class PassangerHomeFragment extends Fragment implements View.OnClickListe
     private static final int GOOGLE_API_CLIENT_ID = 0;
     private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE_2 = 10;
     private View mView;
-    private ImageView _from, _to, _date;
-    private TextView loc_from, loc_to, loc_date;
+    private ImageView _from, _to;
+    private TextView loc_from, loc_to;
     private Button submit;
+
 
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     private GoogleApiClient googleApiClient;
@@ -67,16 +63,14 @@ public class PassangerHomeFragment extends Fragment implements View.OnClickListe
         //views
         _from = (ImageView) mView.findViewById(R.id.iv_fragmenthome_from);
         _to = (ImageView) mView.findViewById(R.id.iv_fragmenthome_to);
-        _date = (ImageView) mView.findViewById(R.id.iv_passangerhome_calenda);
         loc_from = (TextView) mView.findViewById(R.id.tv_passangerhome_from);
         loc_to = (TextView) mView.findViewById(R.id.tv_passangerhome_to);
-        loc_date = (TextView) mView.findViewById(R.id.tv_passangerhome_date);
+
         submit = (Button) mView.findViewById(R.id.btn_passangerhome_search);
 
         //attach listeners
         _from.setOnClickListener(this);
         _to.setOnClickListener(this);
-        _date.setOnClickListener(this);
         submit.setOnClickListener(this);
 
         //
@@ -99,10 +93,11 @@ public class PassangerHomeFragment extends Fragment implements View.OnClickListe
                     })
                     .addOnConnectionFailedListener(this)
                     .build();
-        }catch (Exception e){
+        } catch (Exception e) {
             //Toast.makeText(getActivity(),"Something went wrong. Restart up",Toast.LENGTH_SHORT).show();
         }
 
+//        setCurrentDateOnView();
         return mView;
     }
 
@@ -112,8 +107,8 @@ public class PassangerHomeFragment extends Fragment implements View.OnClickListe
         try {
             googleApiClient.stopAutoManage(getActivity());
             googleApiClient.disconnect();
-        }catch (Exception e){
-            
+        } catch (Exception e) {
+
         }
     }
 
@@ -175,11 +170,6 @@ public class PassangerHomeFragment extends Fragment implements View.OnClickListe
                 Log.v(LOG_TAG, e.getMessage());
             }
 
-        } else if (v == _date) {
-
-            //get date edittext
-            showDatePicker();
-
         } else if (v == submit) {
             submitQuery();
         }
@@ -207,34 +197,6 @@ public class PassangerHomeFragment extends Fragment implements View.OnClickListe
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void showDatePicker() {
-        DatePickerFragment date = new DatePickerFragment();
-        /**
-         * Set Up Current Date Into dialog
-         */
-        java.util.Calendar calender = java.util.Calendar.getInstance();
-        Bundle args = new Bundle();
-        args.putInt("year", calender.get(Calendar.YEAR));
-        args.putInt("month", calender.get(Calendar.MONTH));
-        args.putInt("day", calender.get(Calendar.DAY_OF_MONTH));
-        date.setArguments(args);
-        /**
-         * Set Call back to capture selected date
-         */
-        date.setCallBack(ondate);
-        date.show(getFragmentManager(), "Date Picker");
-    }
-
-    DatePickerDialog.OnDateSetListener ondate = new DatePickerDialog.OnDateSetListener() {
-
-        public void onDateSet(DatePicker view, int year, int monthOfYear,
-                              int dayOfMonth) {
-
-            loc_date.setText(String.valueOf(dayOfMonth) + "-" + String.valueOf(monthOfYear + 1)
-                    + "-" + String.valueOf(year));
-        }
-    };
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -244,10 +206,10 @@ public class PassangerHomeFragment extends Fragment implements View.OnClickListe
             if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
                 if (resultCode == Activity.RESULT_OK) {
                     final Place place = PlaceAutocomplete.getPlace(getActivity(), data);
+
                     Log.i(LOG_TAG, "Place: " + place.getName() + place.getId() + place.getLatLng());
 
                     loc_from.setText(place.getAddress());
-
                     from_address = place.getAddress().toString();
                     from_city = place.getName().toString();
 
@@ -277,6 +239,7 @@ public class PassangerHomeFragment extends Fragment implements View.OnClickListe
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Toast.makeText(getActivity(), "Connection error:" + connectionResult.getErrorMessage(), Toast.LENGTH_SHORT).show();
     }
+
     @Override
     public void onStop() {
         super.onStop();
@@ -285,6 +248,8 @@ public class PassangerHomeFragment extends Fragment implements View.OnClickListe
             googleApiClient.disconnect();
         }
     }
+
+
 }
 
 

@@ -1,6 +1,7 @@
 package com.example.toni.lipafare.Operator.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.example.toni.lipafare.Operator.AllFundsActivity;
 import com.example.toni.lipafare.Operator.Model.Matatu;
 import com.example.toni.lipafare.R;
 
@@ -22,6 +24,7 @@ import java.util.List;
  */
 
 public class FundsAdapter extends RecyclerView.Adapter<FundsAdapter.FundsViewHolder> {
+    public static final String MATATU_KEY_FUNDS ="MATATU_KEY_FUNDS" ;
     private Context ctx;
     private List<Matatu> matList;
     private List<String> keyList;
@@ -57,8 +60,9 @@ public class FundsAdapter extends RecyclerView.Adapter<FundsAdapter.FundsViewHol
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-
+                    Intent i = new Intent(ctx,AllFundsActivity.class);
+                    i.putExtra(MATATU_KEY_FUNDS, key);
+                    v.getContext().startActivity(i);
 
                 }
             });

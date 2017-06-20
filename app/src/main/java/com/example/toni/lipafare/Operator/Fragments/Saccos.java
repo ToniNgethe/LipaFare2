@@ -1,5 +1,6 @@
 package com.example.toni.lipafare.Operator.Fragments;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -19,6 +20,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.toni.lipafare.Operator.Dialog_mat.Dialog_sacco_details;
 import com.example.toni.lipafare.Operator.Dialog_mat.Dialog_sacco_routes;
 import com.example.toni.lipafare.Operator.Dialog_mat.Dialog_saf_means;
+import com.example.toni.lipafare.Operator.FundsActivity;
+import com.example.toni.lipafare.Operator.OperatorDashBoard;
 import com.example.toni.lipafare.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -194,7 +197,8 @@ public class Saccos extends Fragment implements View.OnClickListener{
 
         }else if(v == funds){
 
-
+            Intent i = new Intent(getActivity(), FundsActivity.class);
+            startActivity(i);
 
         }else if(v == means){
 

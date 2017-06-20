@@ -35,15 +35,14 @@
         android:layout_marginBottom="60dp"
         android:layout_marginTop="55dp" />
 
-    <com.roughike.bottombar.BottomBar
-        android:id="@+id/bottomBar"
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:bb_activeTabColor="@color/colorAccent"
-        app:bb_tabXmlResource="@xml/bottom_tabs"
-
-        />
+        android:background="@android:color/white"
+        app:itemIconTint="@drawable/bottom_selector"
+        app:itemTextColor="@drawable/bottom_selector"
+        app:menu="@menu/navigation" />
 
 </android.support.design.widget.CoordinatorLayout>

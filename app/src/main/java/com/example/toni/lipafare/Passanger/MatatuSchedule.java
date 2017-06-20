@@ -94,15 +94,18 @@ public class MatatuSchedule extends AppCompatActivity {
                         Log.d(TAG, "FROM USER" + from);
                         Log.d(TAG, "FROM LOCATION" + ds.child("stage").getValue().toString());
 
-                        matList.clear();
-                        matKeys.clear();
+//                        matList.clear();
+//                        matKeys.clear();
 
                         if (ds.child("stage").getValue().toString().equals(from)) {
-
+                            matList.clear();
+                            matKeys.clear();
                             DatabaseReference cm = mMatatu.child(ds.getKey());
                             cm.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
+
+
 
                                     Log.d(TAG, "Queried matatus" + dataSnapshot.getValue());
 

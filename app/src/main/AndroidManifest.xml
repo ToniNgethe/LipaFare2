@@ -114,10 +114,16 @@
         <activity
             android:name=".Operator.FundsActivity"
             android:label="@string/title_activity_funds"
+            android:parentActivityName=".Operator.OperatorDashBoard"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Operator.AllFundsActivity"
             android:label="@string/title_activity_all_funds"
+            android:parentActivityName=".Operator.FundsActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Operator.OperatorProfile"
+            android:label="@string/title_activity_operator_profile"
             android:theme="@style/AppTheme"></activity>
     </application>
 

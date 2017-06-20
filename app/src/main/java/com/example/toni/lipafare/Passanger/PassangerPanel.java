@@ -3,8 +3,8 @@ package com.example.toni.lipafare.Passanger;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -31,12 +31,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabSelectListener;
 
 public class PassangerPanel extends AppCompatActivity {
 
-    private BottomBar bottomBar;
+    private BottomNavigationView bottomBar;
     private ImageView profile;
     private TextView email, name;
     // index to identify current tab item
@@ -78,7 +76,8 @@ public class PassangerPanel extends AppCompatActivity {
 
 
         //views
-        bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+        bottomBar = (BottomNavigationView) findViewById(R.id.navigation);
+
         profile = (ImageView) findViewById(R.id.iv_passangerpanel_profile);
         email = (TextView) findViewById(R.id.tv_passanger_email);
         name = (TextView) findViewById(R.id.tv_passanger_name);
@@ -101,7 +100,7 @@ public class PassangerPanel extends AppCompatActivity {
         //load tabs
         loadhomeFragments();
         //attachlistener to tab..
-        tabListener();
+        bottomBar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //load data
         loadUserData();
         //change text in status bar
@@ -230,34 +229,34 @@ public class PassangerPanel extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
     }
 
-    private void tabListener() {
-        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
-            @Override
-            public void onTabSelected(@IdRes int tabId) {
-                switch (tabId) {
-                    case R.id.tab_home:
-                        getSupportActionBar().setTitle("Search Route");
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.tab_home:
+                    getSupportActionBar().setTitle("Search Route");
                         navItemIndex = 0;
                         loadhomeFragments();
-                        break;
-                    case R.id.tab_account:
-                        getSupportActionBar().setTitle("My Account");
+                    return true;
+                case R.id.tab_account:
+
+                    getSupportActionBar().setTitle("My Account");
                         navItemIndex = 1;
                         loadhomeFragments();
-                        break;
-                    case R.id.tab_trips:
-                        getSupportActionBar().setTitle("Trips");
-                        navItemIndex = 2;
-                        loadhomeFragments();
-                        break;
-                    default:
-                        navItemIndex = 0;
-                        loadhomeFragments();
-                }
-            }
-        });
-    }
 
+                    return true;
+                case R.id.tab_trips:
+                    getSupportActionBar().setTitle("Trips");
+                    navItemIndex = 2;
+                    loadhomeFragments();
+                    return true;
+            }
+            return false;
+        }
+
+    };
     private void loadhomeFragments() {
 
         Runnable runnable = new Runnable() {
@@ -273,7 +272,33 @@ public class PassangerPanel extends AppCompatActivity {
 
             }
         };
-
+//    private void tabListener() {
+//        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+//            @Override
+//            public void onTabSelected(@IdRes int tabId) {
+//                switch (tabId) {
+//                    case R.id.tab_home:
+//                        getSupportActionBar().setTitle("Search Route");
+//                        navItemIndex = 0;
+//                        loadhomeFragments();
+//                        break;
+//                    case R.id.tab_account:
+//                        getSupportActionBar().setTitle("My Account");
+//                        navItemIndex = 1;
+//                        loadhomeFragments();
+//                        break;
+//                    case R.id.tab_trips:
+//                        getSupportActionBar().setTitle("Trips");
+//                        navItemIndex = 2;
+//                        loadhomeFragments();
+//                        break;
+//                    default:
+//                        navItemIndex = 0;
+//                        loadhomeFragments();
+//                }
+//            }
+//        });
+//    }
         if (runnable != null) {
 
             mHandler.post(runnable);

@@ -114,7 +114,7 @@ public class PassangerMatatauDialog extends Dialog {
         });
 
         DatabaseReference mQueue = FirebaseDatabase.getInstance().getReference().child("Queue");
-        mQueue.child(key).addValueEventListener(new ValueEventListener() {
+        mQueue.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 

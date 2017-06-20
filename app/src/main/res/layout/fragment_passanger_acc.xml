@@ -25,7 +25,7 @@
             android:layout_height="match_parent">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/iv_account_profile"
+                android:id="@+id/iv_operatorProfile_profile"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_gravity="center"
@@ -41,20 +41,20 @@
                 tools:ignore="VectorDrawableCompat" />
 
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab_account_change_pic"
+                android:id="@+id/fab_operatorProfile_pic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 app:fabSize="mini"
                 app:srcCompat="@drawable/ic_add_a_photo_black_24px"
-                android:layout_alignBottom="@+id/iv_account_profile"
-                android:layout_alignRight="@+id/iv_account_profile"
-                android:layout_alignEnd="@+id/iv_account_profile" />
+                android:layout_alignBottom="@+id/iv_operatorProfile_profile"
+                android:layout_alignRight="@+id/iv_operatorProfile_profile"
+                android:layout_alignEnd="@+id/iv_operatorProfile_profile" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/fab_account_change_pic"
+                android:layout_below="@+id/fab_operatorProfile_pic"
                 android:layout_margin="20dp"
                 android:background="@drawable/highlight"
                 android:orientation="vertical"

@@ -36,5 +36,18 @@
     <string name="title_activity_matatu_schedule">MatatuSchedule</string>
     <string name="title_activity_funds">FundsActivity</string>
     <string name="title_activity_all_funds">AllFundsActivity</string>
+    <string name="title_activity_main_activitywrrwr">MainActivitywrrwr</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_operator_profile">OperatorProfile</string>
+    <string name="process">
+        Go to your M-PESA Menu
+        Select Lipa na M-PESA
+        Select Buy Goods and Services
+        Enter Till No 976149
+        Enter Amount indicated
+        Enter Your M-PESA Pin
+    </string>
 
 </resources>

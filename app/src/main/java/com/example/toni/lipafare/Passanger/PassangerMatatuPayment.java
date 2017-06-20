@@ -11,9 +11,18 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.example.toni.lipafare.Application.MySingleton;
 import com.example.toni.lipafare.Passanger.PassangerAdapter.PaasangerQueryAdapter;
 import com.example.toni.lipafare.Passanger.PassangerDialog.PassangerMatatauDialog;
 import com.example.toni.lipafare.Passanger.PassangerDialog.SuccessPayment;
@@ -37,28 +46,39 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class PassangerMatatuPayment extends AppCompatActivity {
 
-    private TextView plate, number, amount_pay;
+    public static final String URL = "http://lipafare.crescentke.com/confirm";
+    private static final String TAG = PassangerMatatuPayment.class.getSimpleName();
+    private TextView plate, amount_pay;
     private FloatingActionButton fab;
     private String saccoKey, mat_key;
     private int sits;
     private int total;
     private String text2Qr;
     private Bitmap bitmap = null;
+    private LinearLayout info, payment;
+    private EditText paymentNumber, paymentTransactionCode;
+    private FloatingActionButton readInfo;
 
     //fire
     private FirebaseAuth mAuth;
     private DatabaseReference mPaymeans, mSacco, mMatatu;
     private StorageReference mTicks;
     private String from, to;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,47 +99,148 @@ public class PassangerMatatuPayment extends AppCompatActivity {
         //views
         plate = (TextView) findViewById(R.id.tv_passangermatatu_plate);
         amount_pay = (TextView) findViewById(R.id.tv_passangermatatupay_amount);
-        number = (TextView) findViewById(R.id.tv_matatupayment_number);
+        info = (LinearLayout) findViewById(R.id.linear_payment_info);
+        payment = (LinearLayout) findViewById(R.id.linear_payment);
+        paymentNumber = (EditText) findViewById(R.id.et_payment_number);
+        readInfo = (FloatingActionButton) findViewById(R.id.fab_readInfo);
+        paymentTransactionCode = (EditText) findViewById(R.id.et_payment_code);
+        //firebase....
+        mAuth = FirebaseAuth.getInstance();
+        mSacco = FirebaseDatabase.getInstance().getReference().child("Sacco");
+        mPaymeans = FirebaseDatabase.getInstance().getReference().child("Paymeans");
 
         fab = (FloatingActionButton) findViewById(R.id.fab_passangermatatupay);
+
+        readInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                info.setVisibility(View.VISIBLE);
+                payment.setVisibility(View.GONE);
+                readInfo.setVisibility(View.GONE);
+
+            }
+        });
+
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                if (readInfo.getVisibility() != View.VISIBLE) {
 
-                final SweetAlertDialog pDialog = new SweetAlertDialog(PassangerMatatuPayment.this, SweetAlertDialog.PROGRESS_TYPE);
-                pDialog.getProgressHelper().setBarColor(Color.parseColor("#f50057"));
-                pDialog.setTitleText("Verifying payment...");
-                pDialog.setCancelable(false);
-                pDialog.show();
+                    info.setVisibility(View.GONE);
+                    payment.setVisibility(View.VISIBLE);
+                    readInfo.setVisibility(View.VISIBLE);
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        pDialog.dismiss();
+                } else {
+                    //
 
-                        new SweetAlertDialog(PassangerMatatuPayment.this, SweetAlertDialog.SUCCESS_TYPE)
-                                .setTitleText("Payment Verified")
-                                .setContentText("Click to generate ticket")
-                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    if (!paymentTransactionCode.getText().toString().isEmpty() && !paymentNumber.getText().toString().isEmpty()) {
+
+                        final SweetAlertDialog pDialog = new SweetAlertDialog(PassangerMatatuPayment.this, SweetAlertDialog.PROGRESS_TYPE);
+                        pDialog.getProgressHelper().setBarColor(Color.parseColor("#f50057"));
+                        pDialog.setTitleText("Verifying payment...");
+                        pDialog.setCancelable(false);
+                        pDialog.show();
+
+                        new Handler().post(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
+                                        new Response.Listener<String>() {
+                                            @Override
+                                            public void onResponse(String response) {
+
+                                                Log.d(TAG, response);
+
+
+
+                                                try {
+                                                    JSONObject jsonObject = new JSONObject(response);
+                                                    boolean error = jsonObject.getBoolean("error");
+
+                                                    if (!error) {
+                                                        pDialog.dismiss();
+                                                        new SweetAlertDialog(PassangerMatatuPayment.this, SweetAlertDialog.SUCCESS_TYPE)
+                                                                .setTitleText("Payment Verified")
+                                                                .setContentText("Click to generate ticket")
+                                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                                    @Override
+                                                                    public void onClick(final SweetAlertDialog sweetAlertDialog) {
+                                                                        sweetAlertDialog.dismiss();
+
+
+                                                                        generateTicket();
+
+                                                                    }
+                                                                })
+                                                                .show();
+
+                                                    } else {
+
+                                                        pDialog.dismiss();
+                                                        new SweetAlertDialog(PassangerMatatuPayment.this, SweetAlertDialog.ERROR_TYPE)
+                                                                .setTitleText("Oops")
+                                                                .setContentText(jsonObject.getString("msg"))
+                                                                .show();
+                                                    }
+
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+
+                                                    new SweetAlertDialog(PassangerMatatuPayment.this, SweetAlertDialog.ERROR_TYPE)
+                                                            .setTitleText(e.getMessage())
+                                                            .show();
+                                                }
+                                            }
+                                        },
+                                        new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError volleyError) {
+                                                //Dismissing the progress dialog
+                                                pDialog.dismiss();
+                                              //  Log.d(TAG, volleyError.getMessage());
+                                                //  showToast(volleyEchrror.getMessage());
+                                                new SweetAlertDialog(PassangerMatatuPayment.this, SweetAlertDialog.ERROR_TYPE)
+                                                        .setTitleText(volleyError.getMessage())
+                                                        .show();
+
+                                            }
+                                        }) {
                                     @Override
-                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                        sweetAlertDialog.dismiss();
-                                        generateTicket();
+                                    protected Map<String, String> getParams() throws AuthFailureError {
 
+                                        //Creating parameters
+                                        Map<String, String> params = new HashMap<>();
+
+                                        //Adding parameters
+                                        params.put("userid", mAuth.getCurrentUser().getUid());
+                                        params.put("transactionNumber", paymentNumber.getText().toString());
+                                        params.put("transactionCode", paymentTransactionCode.getText().toString());
+                                        //  params.put("total",3);
+
+                                        //returning parameters
+                                        return params;
                                     }
-                                })
-                                .show();
+                                };
 
+                                MySingleton.getInstance(PassangerMatatuPayment.this).addToRequestQueue(stringRequest);
+
+
+                            }
+                        });
+                    } else {
+                        new SweetAlertDialog(PassangerMatatuPayment.this, SweetAlertDialog.ERROR_TYPE)
+                                .setTitleText("Oops...")
+                                .setContentText("Please eneter transaction code sent to your phone and number used")
+                                .show();
                     }
-                }, 5000);
+                }
             }
         });
 
-        //firebase
-        mAuth = FirebaseAuth.getInstance();
-        mSacco = FirebaseDatabase.getInstance().getReference().child("Sacco");
-        mPaymeans = FirebaseDatabase.getInstance().getReference().child("Paymeans");
 
         //load mat data
         matatu();
@@ -166,33 +287,34 @@ public class PassangerMatatuPayment extends AppCompatActivity {
                         dataSnapshot.child("status").getRef().setValue(0);
                         dataSnapshot.child("from").getRef().setValue(from);
                         dataSnapshot.child("to").getRef().setValue(to);
+                        dataSnapshot.child("date").getRef().setValue(currentDate());
                         dataSnapshot.child("user").getRef().setValue(mAuth.getCurrentUser().getUid());
                         dataSnapshot.child("image").getRef().setValue(taskSnapshot.getDownloadUrl().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 pDialog.dismiss();
-                                if (task.isSuccessful()){
+                                if (task.isSuccessful()) {
 
                                     DatabaseReference mQueu = FirebaseDatabase.getInstance().getReference().child("Queue").child(mat_key);
                                     mQueu.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                            if (dataSnapshot.exists()){
+                                            if (dataSnapshot.exists()) {
 
                                                 int a = Integer.valueOf(dataSnapshot.child("sits").getValue().toString());
 
-                                                dataSnapshot.child("sits").getRef().setValue(a-sits).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                dataSnapshot.child("sits").getRef().setValue(a - sits).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
 
-                                                        if (task.isSuccessful()){
-                                                            SuccessPayment successPayment = new SuccessPayment(PassangerMatatuPayment.this,mat_key,sits,total,key,taskSnapshot.getDownloadUrl().toString());
+                                                        if (task.isSuccessful()) {
+                                                            SuccessPayment successPayment = new SuccessPayment(PassangerMatatuPayment.this, mat_key, sits, total, key, taskSnapshot.getDownloadUrl().toString());
                                                             successPayment.setCanceledOnTouchOutside(false);
                                                             successPayment.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                                                             successPayment.getWindow().getAttributes().windowAnimations = R.style.MyAnimation_Window;
                                                             successPayment.show();
-                                                        }else {
+                                                        } else {
                                                             new SweetAlertDialog(PassangerMatatuPayment.this, SweetAlertDialog.ERROR_TYPE)
                                                                     .setTitleText("Oops...")
                                                                     .setContentText(task.getException().getMessage())
@@ -201,7 +323,7 @@ public class PassangerMatatuPayment extends AppCompatActivity {
                                                     }
                                                 });
 
-                                            }else {
+                                            } else {
                                                 new SweetAlertDialog(PassangerMatatuPayment.this, SweetAlertDialog.ERROR_TYPE)
                                                         .setTitleText("Oops...")
                                                         .setContentText("Unable to locate this matatu")
@@ -217,7 +339,7 @@ public class PassangerMatatuPayment extends AppCompatActivity {
                                     });
 
 
-                                }else {
+                                } else {
                                     new SweetAlertDialog(PassangerMatatuPayment.this, SweetAlertDialog.ERROR_TYPE)
                                             .setTitleText("Oops...")
                                             .setContentText(task.getException().getMessage())
@@ -280,7 +402,7 @@ public class PassangerMatatuPayment extends AppCompatActivity {
 
                                 total = sits * Integer.valueOf(n);
                                 //load amount to pay
-                                amount_pay.setText(String.valueOf(total));
+                                amount_pay.setText("Ksh. " + String.valueOf(total));
 
                             }
 
@@ -292,23 +414,6 @@ public class PassangerMatatuPayment extends AppCompatActivity {
                         }
                     });
 
-                    DatabaseReference cp = mPaymeans.child(String.valueOf(dataSnapshot.child("sacco").getValue()));
-                    cp.child("Safaricom").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-
-                            if (dataSnapshot.exists()) {
-
-                                number.setText(" PAYBILL NUMBER :" + dataSnapshot.getValue().toString());
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
                 }
 
             }
@@ -361,6 +466,16 @@ public class PassangerMatatuPayment extends AppCompatActivity {
 
         }
         return uri;
+    }
+
+    private String currentDate() {
+        Date date = new Date();
+        Date newDate = new Date(date.getTime() + (604800000L * 2) + (24 * 60 * 60));
+        SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yyyy");
+        String stringdate = dt.format(newDate);
+
+
+        return stringdate;
     }
 
 
