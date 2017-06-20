@@ -216,7 +216,7 @@ public class PassangerMatatuPayment extends AppCompatActivity {
                                         Map<String, String> params = new HashMap<>();
 
                                         //Adding parameters
-                                        params.put("userid", mAuth.getCurrentUser().getUid());
+                                        params.put("userid", mat_key);
                                         params.put("transactionNumber", paymentNumber.getText().toString());
                                         params.put("transactionCode", paymentTransactionCode.getText().toString());
                                         //  params.put("total",3);
