@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -90,7 +91,7 @@ public class PassangerMatatuPayment extends AppCompatActivity {
         getSupportActionBar().setTitle("Payment");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         mat_key = getIntent().getExtras().getString(PassangerMatatauDialog.MATATU_KEY);
         sits = getIntent().getExtras().getInt(PassangerMatatauDialog.MATATU_SITS);
         from = getIntent().getExtras().getString(PaasangerQueryAdapter.FROM_ADD);
@@ -154,9 +155,6 @@ public class PassangerMatatuPayment extends AppCompatActivity {
                                             public void onResponse(String response) {
 
                                                 Log.d(TAG, response);
-
-
-
                                                 try {
                                                     JSONObject jsonObject = new JSONObject(response);
                                                     boolean error = jsonObject.getBoolean("error");

@@ -3,6 +3,7 @@ package com.example.toni.lipafare.Passanger;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -55,10 +56,14 @@ public class PassangerPanel extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.overall);
+        if (savedInstanceState != null){
+            navItemIndex = savedInstanceState.getInt("SELECTED_POSITION");
+        }
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         //Firebase
 
@@ -77,6 +82,18 @@ public class PassangerPanel extends AppCompatActivity {
 
         //views
         bottomBar = (BottomNavigationView) findViewById(R.id.navigation);
+
+        switch (navItemIndex){
+            case 0:
+                bottomBar.setSelectedItemId(R.id.tab_home);
+                break;
+            case 1:
+                bottomBar.setSelectedItemId(R.id.tab_account);
+                break;
+            case 2:
+                bottomBar.setSelectedItemId(R.id.tab_trips);
+                break;
+        }
 
         profile = (ImageView) findViewById(R.id.iv_passangerpanel_profile);
         email = (TextView) findViewById(R.id.tv_passanger_email);
@@ -105,6 +122,12 @@ public class PassangerPanel extends AppCompatActivity {
         loadUserData();
         //change text in status bar
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        outState.putInt("SELECTED_POSITION", navItemIndex);
+        super.onSaveInstanceState(outState, outPersistentState);
     }
 
     @Override
@@ -144,7 +167,7 @@ public class PassangerPanel extends AppCompatActivity {
                                                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                                                     .error(R.mipmap.profile2)
                                                     .into(imgProfile);
-                                        }catch (Exception e){
+                                        } catch (Exception e) {
                                             e.printStackTrace();
                                         }
                                     }
@@ -174,9 +197,10 @@ public class PassangerPanel extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+
+
                 switch (item.getItemId()) {
                     case R.id.passanger_ticks:
-
                         drawer.closeDrawers();
                         break;
                     case R.id.passanger_cancel:
@@ -237,26 +261,39 @@ public class PassangerPanel extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.tab_home:
                     getSupportActionBar().setTitle("Search Route");
-                        navItemIndex = 0;
-                        loadhomeFragments();
-                    return true;
+
+                    navItemIndex = 0;
+                    loadhomeFragments();
+                    break;
                 case R.id.tab_account:
 
                     getSupportActionBar().setTitle("My Account");
-                        navItemIndex = 1;
-                        loadhomeFragments();
 
-                    return true;
+                    navItemIndex = 1;
+                    loadhomeFragments();
+                    break;
                 case R.id.tab_trips:
+
                     getSupportActionBar().setTitle("Trips");
+
                     navItemIndex = 2;
                     loadhomeFragments();
-                    return true;
+                    break;
+
             }
-            return false;
+
+//            if (item.isChecked()) {
+//                item.setChecked(false);
+//            } else {
+//                item.setChecked(true);
+//            }
+//            item.setChecked(true);
+
+            return true;
         }
 
     };
+
     private void loadhomeFragments() {
 
         Runnable runnable = new Runnable() {
@@ -308,22 +345,27 @@ public class PassangerPanel extends AppCompatActivity {
 
     private Fragment getHomeFragment() {
 
+        Menu menu  = bottomBar.getMenu();
 
         switch (navItemIndex) {
             case 0:
 
+                getSupportActionBar().setTitle("Search Route");
                 return new PassangerHomeFragment();
 
             case 1:
-
+              //  menu.getItem(R.id.tab_account).setChecked(true);
+                getSupportActionBar().setTitle("My Account");
                 return new PassangerAccountFragment();
 
             case 2:
-
+               // menu.getItem(R.id.tab_trips).setChecked(true);
+                getSupportActionBar().setTitle("Trips");
                 return new PassangerTripsFragment();
 
             default:
-
+             //   menu.getItem(R.id.tab_home).setChecked(true);
+                getSupportActionBar().setTitle("Search Route");
                 return new PassangerHomeFragment();
         }
 
