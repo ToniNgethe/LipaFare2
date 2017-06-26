@@ -471,8 +471,6 @@ public class PassangerMatatuPayment extends AppCompatActivity {
         Date newDate = new Date(date.getTime() + (604800000L * 2) + (24 * 60 * 60));
         SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yyyy");
         String stringdate = dt.format(newDate);
-
-
         return stringdate;
     }
 

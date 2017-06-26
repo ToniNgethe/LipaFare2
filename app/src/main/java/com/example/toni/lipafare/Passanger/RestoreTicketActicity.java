@@ -56,7 +56,7 @@ public class RestoreTicketActicity extends AppCompatActivity {
         mTickets.child(ticket).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
 
                     _ticket.setText(ticket);
                     _sits.setText(dataSnapshot.child("sits").getValue().toString() + "sit(s)");
@@ -66,10 +66,10 @@ public class RestoreTicketActicity extends AppCompatActivity {
                     mMats.child(dataSnapshot.child("matatu").getValue().toString()).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot ds) {
-                            if (ds.exists()){
+                            if (ds.exists()) {
 
                                 _plate.setText(ds.child("plate").getValue().toString());
-                                _route.setText(ds.child("from").getValue().toString() +" TO/FROM "+ ds.child("from").getValue().toString() );
+                                _route.setText(ds.child("from").getValue().toString() + " TO/FROM " + ds.child("from").getValue().toString());
 
 
                             }
@@ -104,42 +104,116 @@ public class RestoreTicketActicity extends AppCompatActivity {
                 DatabaseReference t = mTickets.child(ticket);
                 t.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
+                    public void onDataChange(final DataSnapshot ds) {
 
-                        if (dataSnapshot.exists()) {
+                        if (ds.exists()) {
 
                             if (clickd) {
 
-                                dataSnapshot.child("status").getRef().setValue(0).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                //check if matatu is in Queue
+                                final String matatu = ds.child("matatu").getValue().toString();
+                                final String sits = ds.child("sits").getValue().toString();
+
+                                DatabaseReference mQueue = FirebaseDatabase.getInstance().getReference().child("Queue");
+                                mQueue.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        pDialog.dismissWithAnimation();
-                                        if (task.isSuccessful()) {
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                            try {
-                                                new SweetAlertDialog(RestoreTicketActicity.this, SweetAlertDialog.SUCCESS_TYPE)
-                                                        .setTitleText("Successfully restored...")
-                                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        if (dataSnapshot.child(matatu).exists()) {
+
+                                            //matatu inn queue
+                                            String a = dataSnapshot.child(matatu).child("sits").getValue().toString();
+
+                                            dataSnapshot.child(matatu).child("sits").getRef().setValue(Integer.valueOf(a) + Integer.valueOf(sits)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    clickd = true;
+                                                    if (task.isSuccessful()) {
+
+                                                        ds.child("status").getRef().setValue(0).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
-                                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                                                sweetAlertDialog.dismiss();
-                                                                finish();
-                                                            }
-                                                        })
-                                                        .show();
+                                                            public void onComplete(@NonNull Task<Void> task) {
 
-                                                clickd = false;
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                            }
+                                                                if (task.isSuccessful()) {
+                                                                    try {
+                                                                        new SweetAlertDialog(RestoreTicketActicity.this, SweetAlertDialog.SUCCESS_TYPE)
+                                                                                .setTitleText("Successfully restored...")
+                                                                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                                                    @Override
+                                                                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                                                        sweetAlertDialog.dismiss();
+                                                                                        finish();
+                                                                                    }
+                                                                                })
+                                                                                .show();
+
+                                                                        clickd = false;
+                                                                    } catch (Exception e) {
+                                                                        e.printStackTrace();
+                                                                    }
+                                                                } else {
+                                                                    new SweetAlertDialog(RestoreTicketActicity.this, SweetAlertDialog.ERROR_TYPE)
+                                                                            .setTitleText("Oops...")
+                                                                            .setContentText("Error in restoring ticket....")
+                                                                            .show();
+                                                                }
+                                                            }
+                                                        });
+                                                    } else {
+                                                        new SweetAlertDialog(RestoreTicketActicity.this, SweetAlertDialog.ERROR_TYPE)
+                                                                .setTitleText("Oops...")
+                                                                .setContentText("Error in restoring ticket....")
+                                                                .show();
+                                                    }
+                                                }
+                                            });
+
                                         } else {
                                             new SweetAlertDialog(RestoreTicketActicity.this, SweetAlertDialog.ERROR_TYPE)
-                                                    .setTitleText("Oops...")
-                                                    .setContentText(task.getException().getMessage())
+                                                    .setTitleText("Sorry...")
+                                                    .setContentText("Matatu/Bus is not in queue.You cannot restore this ticket")
                                                     .show();
                                         }
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
                                     }
                                 });
+
+
+//                                dataSnapshot.child("status").getRef().setValue(0).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                    @Override
+//                                    public void onComplete(@NonNull Task<Void> task) {
+//                                        pDialog.dismissWithAnimation();
+//                                        if (task.isSuccessful()) {
+//
+//                                            try {
+//                                                new SweetAlertDialog(RestoreTicketActicity.this, SweetAlertDialog.SUCCESS_TYPE)
+//                                                        .setTitleText("Successfully restored...")
+//                                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                                                            @Override
+//                                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+//                                                                sweetAlertDialog.dismiss();
+//                                                                finish();
+//                                                            }
+//                                                        })
+//                                                        .show();
+//
+//                                                clickd = false;
+//                                            } catch (Exception e) {
+//                                                e.printStackTrace();
+//                                            }
+//                                        } else {
+//                                            new SweetAlertDialog(RestoreTicketActicity.this, SweetAlertDialog.ERROR_TYPE)
+//                                                    .setTitleText("Oops...")
+//                                                    .setContentText(task.getException().getMessage())
+//                                                    .show();
+//                                        }
+//                                    }
+//                                });
                             }
                         }
                     }

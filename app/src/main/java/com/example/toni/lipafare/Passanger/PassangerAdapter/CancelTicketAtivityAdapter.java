@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.toni.lipafare.Passanger.PassModel.TicketModel;
 import com.example.toni.lipafare.R;
@@ -98,13 +99,13 @@ public class CancelTicketAtivityAdapter extends RecyclerView.Adapter<CancelTicke
 
                                 //check if that matatu is in stage
                                 DatabaseReference mMatatu = FirebaseDatabase.getInstance().getReference().child("Tickets");
-                                mMatatu.addListenerForSingleValueEvent(new ValueEventListener() {
+                                mMatatu.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                    public void onDataChange(final DataSnapshot ds) {
 
-                                        if (dataSnapshot.exists()){
-                                            String matatu = dataSnapshot.child("matatu").getValue().toString();
-                                            final String sits = dataSnapshot.child("sits").getValue().toString();
+                                        if (ds.exists()){
+                                            String matatu = ds.child("matatu").getValue().toString();
+                                            final String sits = ds.child("sits").getValue().toString();
 
                                             //now check in Queue...
                                             DatabaseReference mQueu = FirebaseDatabase.getInstance().getReference().child("Queue").child(matatu);
@@ -118,10 +119,32 @@ public class CancelTicketAtivityAdapter extends RecyclerView.Adapter<CancelTicke
                                                         String a = dataSnapshot.child("sits").getValue().toString();
 
                                                         //restore number of tickets...
-                                                        dataSnapshot.child("sits").getRef().setValue(Integer.valueOf(sits) + Integer.valueOf(a)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        dataSnapshot.child("sits").getRef().setValue(Integer.valueOf(a) + Integer.valueOf(sits)).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
                                                                 if (task.isSuccessful()){
+
+                                                                    myTickets.remove(position);
+                                                                    keys.remove(position);
+                                                                    notifyItemRemoved(position);
+
+                                                                    //change status to cancleled
+                                                                    ds.child("status").getRef().setValue(2).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                            if (task.isSuccessful()){
+
+                                                                                Toast.makeText(ctx, "Ticket cancelled", Toast.LENGTH_SHORT).show();
+
+                                                                            }else {
+                                                                                new SweetAlertDialog(ctx, SweetAlertDialog.ERROR_TYPE)
+                                                                                        .setTitleText("Oops...")
+                                                                                        .setContentText(task.getException().getMessage())
+                                                                                        .show();
+                                                                            }
+                                                                        }
+                                                                    });
+
 
                                                                 }else {
                                                                     new SweetAlertDialog(ctx, SweetAlertDialog.ERROR_TYPE)
@@ -136,7 +159,7 @@ public class CancelTicketAtivityAdapter extends RecyclerView.Adapter<CancelTicke
                                                     }else {
                                                         new SweetAlertDialog(ctx, SweetAlertDialog.ERROR_TYPE)
                                                                     .setTitleText("Sorry...")
-                                                                    .setContentText("Matatu/Bus is not in queue...")
+                                                                    .setContentText("Matatu/Bus is not in queue.You cannot cancel this ticket")
                                                                     .show();
                                                     }
                                                 }
@@ -146,6 +169,11 @@ public class CancelTicketAtivityAdapter extends RecyclerView.Adapter<CancelTicke
 
                                                 }
                                             });
+                                        }else {
+                                            new SweetAlertDialog(ctx, SweetAlertDialog.ERROR_TYPE)
+                                                    .setTitleText("Sorry...")
+                                                    .setContentText("Unable to get ticket...")
+                                                    .show();
                                         }
 
                                     }
