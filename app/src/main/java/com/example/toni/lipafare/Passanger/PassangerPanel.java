@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,8 +53,10 @@ public class PassangerPanel extends AppCompatActivity {
     private TextView txtName, txtWebsite;
     private Toolbar toolbar;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.overall);
         if (savedInstanceState != null){
@@ -61,7 +64,6 @@ public class PassangerPanel extends AppCompatActivity {
         }
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
@@ -197,8 +199,6 @@ public class PassangerPanel extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-
-
                 switch (item.getItemId()) {
                     case R.id.passanger_ticks:
                         drawer.closeDrawers();
@@ -309,6 +309,8 @@ public class PassangerPanel extends AppCompatActivity {
 
             }
         };
+
+
 //    private void tabListener() {
 //        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
 //            @Override

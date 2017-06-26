@@ -31,7 +31,7 @@
                     android:layout_width="96dp"
                     android:layout_height="76dp"
                     android:padding="15dp"
-                    app:srcCompat="@mipmap/ic_track" />
+                    android:src="@mipmap/ic_track" />
 
                 <TextView
                     android:id="@+id/tv_passangerhome_from"
@@ -70,7 +70,7 @@
                     android:layout_width="96dp"
                     android:layout_height="76dp"
                     android:padding="15dp"
-                    app:srcCompat="@mipmap/ic_track" />
+                    android:src="@mipmap/ic_track" />
 
                 <TextView
                     android:id="@+id/tv_passangerhome_to"

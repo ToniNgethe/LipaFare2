@@ -96,42 +96,56 @@ public class CancelTicketAtivityAdapter extends RecyclerView.Adapter<CancelTicke
                             public void onClick(SweetAlertDialog sDialog) {
                                 sDialog.dismissWithAnimation();
 
-                                clicked = true;
-
-                                myTickets.remove(position);
-                                keys.remove(position);
-                                notifyItemRemoved(position);
-                                // notifyItemRangeChanged(position, myTickets.size());notifyItemRangeChanged(position, keys.size());
-
-                                DatabaseReference mTicks = FirebaseDatabase.getInstance().getReference().child("Tickets");
-                                mTicks.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                                //check if that matatu is in stage
+                                DatabaseReference mMatatu = FirebaseDatabase.getInstance().getReference().child("Tickets");
+                                mMatatu.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                        if (dataSnapshot.exists()) {
+                                        if (dataSnapshot.exists()){
+                                            String matatu = dataSnapshot.child("matatu").getValue().toString();
+                                            final String sits = dataSnapshot.child("sits").getValue().toString();
 
-                                            if (clicked) {
+                                            //now check in Queue...
+                                            DatabaseReference mQueu = FirebaseDatabase.getInstance().getReference().child("Queue").child(matatu);
+                                            mQueu.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                    if (dataSnapshot.exists()){
 
-                                                dataSnapshot.child("status").getRef().setValue(2).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        //restore sit....
+                                                        //get sits number first....
+                                                        String a = dataSnapshot.child("sits").getValue().toString();
 
-                                                        if (task.isSuccessful()) {
+                                                        //restore number of tickets...
+                                                        dataSnapshot.child("sits").getRef().setValue(Integer.valueOf(sits) + Integer.valueOf(a)).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if (task.isSuccessful()){
 
-                                                            clicked = false;
+                                                                }else {
+                                                                    new SweetAlertDialog(ctx, SweetAlertDialog.ERROR_TYPE)
+                                                                            .setTitleText("Ooops...")
+                                                                            .setContentText(task.getException().getMessage())
+                                                                            .show();
+                                                                }
+                                                            }
+                                                        });
 
-                                                        } else {
-                                                            new SweetAlertDialog(ctx, SweetAlertDialog.ERROR_TYPE)
-                                                                    .setTitleText("Oops...")
-                                                                    .setContentText(task.getException().getMessage())
+
+                                                    }else {
+                                                        new SweetAlertDialog(ctx, SweetAlertDialog.ERROR_TYPE)
+                                                                    .setTitleText("Sorry...")
+                                                                    .setContentText("Matatu/Bus is not in queue...")
                                                                     .show();
-
-                                                            clicked = false;
-
-                                                        }
                                                     }
-                                                });
-                                            }
+                                                }
+
+                                                @Override
+                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                }
+                                            });
                                         }
 
                                     }
@@ -141,6 +155,49 @@ public class CancelTicketAtivityAdapter extends RecyclerView.Adapter<CancelTicke
 
                                     }
                                 });
+
+//                                clicked = true;
+//
+//                                myTickets.remove(position);
+//                                keys.remove(position);
+//                                notifyItemRemoved(position);
+//                                // notifyItemRangeChanged(position, myTickets.size());notifyItemRangeChanged(position, keys.size());
+//
+//                                DatabaseReference mTicks = FirebaseDatabase.getInstance().getReference().child("Tickets");
+//                                mTicks.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+//                                    @Override
+//                                    public void onDataChange(DataSnapshot dataSnapshot) {
+//                                        if (dataSnapshot.exists()) {
+//                                            if (clicked) {
+//                                                dataSnapshot.child("status").getRef().setValue(2).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                                    @Override
+//                                                    public void onComplete(@NonNull Task<Void> task) {
+//
+//                                                        if (task.isSuccessful()) {
+//
+//                                                            clicked = false;
+//
+//                                                        } else {
+//                                                            new SweetAlertDialog(ctx, SweetAlertDialog.ERROR_TYPE)
+//                                                                    .setTitleText("Oops...")
+//                                                                    .setContentText(task.getException().getMessage())
+//                                                                    .show();
+//
+//                                                            clicked = false;
+//
+//                                                        }
+//                                                    }
+//                                                });
+//                                            }
+//                                        }
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void onCancelled(DatabaseError databaseError) {
+//
+//                                    }
+//                                });
                             }
                         })
                         .setCancelText("No")
