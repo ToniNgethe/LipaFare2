@@ -93,7 +93,6 @@
             android:layout_gravity="center"
             android:layout_marginTop="70dp"
             android:layout_weight="0.43"
-            android:drawableLeft="@drawable/ic_directions_bus_black_24dp"
             android:gravity="center"
             android:text="Search Bus /Matatu" />
     </LinearLayout>

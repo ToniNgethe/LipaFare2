@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item android:id="@+id/search"
+        android:title="Search Funds"
+        android:icon="@drawable/ic_search_black_24dp"
+        app:showAsAction="always|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        tools:ignore="AppCompatResource" />
     <item
         android:id="@+id/funds_clear"
         android:title="Clear"
         android:orderInCategory="100"
         app:showAsAction="never" />
     <item
-        android:id="@+id/funds_date"
-        android:title="Choose date"
+        android:id="@+id/funds_print"
+        android:title="Print"
         android:orderInCategory="100"
         app:showAsAction="never" />
+
 </menu>

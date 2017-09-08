@@ -9,20 +9,7 @@
             android:id="@+id/passanger_cancel"
             android:icon="@mipmap/ic_cancel"
             android:title="@string/cancel_tick" />
-        <item
-            android:id="@+id/passanger_notification"
-            android:icon="@mipmap/ic_notificationicon"
-            android:title="@string/notification" />
 
 
     </group>
-
-    <item android:title="Other">
-        <menu>
-            <item
-                android:id="@+id/pass_about_us"
-                android:icon="@mipmap/ic_info"
-                android:title="@string/about" />
-        </menu>
-    </item>
 </menu>

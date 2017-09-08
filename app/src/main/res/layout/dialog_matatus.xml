@@ -189,7 +189,7 @@
             app:srcCompat="@mipmap/ic_mode_edit_black_24dp" />
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/floatingActionButton"
+            android:id="@+id/fab_delete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="50dp"

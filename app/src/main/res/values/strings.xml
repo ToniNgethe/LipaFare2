@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LipaFare</string>
+    <string name="app_name">Lipa Fare</string>
     <string name="title_activity_add_sacco">AddSaccoActivity</string>
     <string name="title_activity_add_sacco_location">AddSaccoLocationActivity</string>
     <string name="field_message">Field(s) cannot be empty</string>
